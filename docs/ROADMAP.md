@@ -48,6 +48,32 @@ _(Status: this phase — repo and docs are being created now.)_
   resolved. Not scoped yet. Nothing in Phases 0–2 should assume this phase
   happens.
 
+### Future Feature — Live Presence
+
+**Status:** Planned / Deferred.
+
+**Concept:** a subtle `🟢 42 online` indicator near the player — anonymous,
+aggregate-only, no user list. Full architecture, session model, heartbeat/
+expiry design, multi-tab trade-offs, privacy constraints, and a
+non-binding technology comparison (WebSocket vs. SSE vs. Supabase
+Realtime vs. Firebase vs. Redis vs. Cloudflare) are documented in
+[ARCHITECTURE.md — Future: Realtime Presence](ARCHITECTURE.md#future--realtime-presence).
+Not implemented; no realtime infrastructure exists yet.
+
+**Reason deferred:** Not required for initial UX validation and would
+introduce backend/realtime infrastructure before the core product
+question — whether the no-seek, radio-like listening experience itself
+works — has been validated. Matches the project's stated bias against
+adding infrastructure ahead of a concrete, validated need (see
+[ARCHITECTURE.md](ARCHITECTURE.md) non-goals and [MUSIC-SOURCE.md](MUSIC-SOURCE.md)).
+
+**Earliest reconsideration point:** after Phase 2 review findings are in
+and Phase 3 (music-source decision) is underway — i.e. once the product
+itself is validated and some form of backend is being considered anyway
+for other reasons. Global presence before station-level presence; station-
+level presence (`90s Hindi 🟢 18 listening`) only after global presence is
+proven to add value.
+
 ## Out of scope until a phase explicitly calls for it
 
 Microservices, Kubernetes, complex backend infra, recommendation/AI
