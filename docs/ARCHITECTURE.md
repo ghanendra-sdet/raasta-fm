@@ -120,7 +120,7 @@ support it.** See [ROADMAP.md](ROADMAP.md) for when this is revisited.
 
 Inspired by [saloon.wtf](https://saloon.wtf/)'s `🟢 18 online` indicator.
 The point is not analytics — it's the psychological effect of a shared
-listening space: *"I'm listening together with other people."* Raasta FM
+listening space: _"I'm listening together with other people."_ Raasta FM
 is trying to feel like a shared radio, not a private library, and this is
 one of the cheapest ways to reinforce that without adding social features.
 First-implementation wording: `🟢 42 online` (accurate — doesn't claim
@@ -227,14 +227,14 @@ Raasta FM clients render 🟢 42 online
 
 ### Technology options (not chosen — evaluate at implementation time)
 
-| Option | Fit for this project |
-| --- | --- |
-| WebSocket (self-hosted or via a small managed service) | Full control over presence/heartbeat logic; requires running and operating a stateful server — real operational overhead for a prototype. |
-| Server-Sent Events (SSE) for the count, simple heartbeat POSTs for presence | One-directional broadcast is enough (clients only ever *receive* a count); no bidirectional socket needed; works over plain HTTP; simplest to host on most platforms. |
-| Supabase Realtime (Presence feature) | Purpose-built anonymous presence with TTL semantics out of the box; free tier likely sufficient at this scale; adds a third-party dependency and account. |
-| Firebase Realtime Database (`onDisconnect` presence pattern) | Well-documented presence pattern (`onDisconnect` handles the disconnect case natively); adds a Google-account dependency and its own data-residency/pricing considerations. |
-| Redis-backed presence (`SETEX` per session, `SCARD`/count on read) | Cheap and simple *if a server already exists*; introduces a new piece of infrastructure (Redis) purely for this feature otherwise. |
-| Cloudflare Durable Objects / Workers | Good fit for cheap, globally-distributed ephemeral presence at small scale; newer/less standard pattern, steeper learning curve than the alternatives above. |
+| Option                                                                      | Fit for this project                                                                                                                                                        |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WebSocket (self-hosted or via a small managed service)                      | Full control over presence/heartbeat logic; requires running and operating a stateful server — real operational overhead for a prototype.                                   |
+| Server-Sent Events (SSE) for the count, simple heartbeat POSTs for presence | One-directional broadcast is enough (clients only ever _receive_ a count); no bidirectional socket needed; works over plain HTTP; simplest to host on most platforms.       |
+| Supabase Realtime (Presence feature)                                        | Purpose-built anonymous presence with TTL semantics out of the box; free tier likely sufficient at this scale; adds a third-party dependency and account.                   |
+| Firebase Realtime Database (`onDisconnect` presence pattern)                | Well-documented presence pattern (`onDisconnect` handles the disconnect case natively); adds a Google-account dependency and its own data-residency/pricing considerations. |
+| Redis-backed presence (`SETEX` per session, `SCARD`/count on read)          | Cheap and simple _if a server already exists_; introduces a new piece of infrastructure (Redis) purely for this feature otherwise.                                          |
+| Cloudflare Durable Objects / Workers                                        | Good fit for cheap, globally-distributed ephemeral presence at small scale; newer/less standard pattern, steeper learning curve than the alternatives above.                |
 
 **Preliminary lean (to be re-evaluated when this is actually built, not a
 commitment now):** SSE (or a managed presence primitive like Supabase
@@ -245,12 +245,12 @@ than standing up new infrastructure for a cosmetic counter.
 
 ### Why it's intentionally deferred
 
-Live presence needs *some* backend/realtime infrastructure — the one
+Live presence needs _some_ backend/realtime infrastructure — the one
 category of infrastructure the current MVP scope explicitly avoids
 (see [MUSIC-SOURCE.md](MUSIC-SOURCE.md) and this doc's non-goals). Building
 it now would mean standing up realtime infrastructure before the core
-product question — *is the no-seek, radio-like listening experience
-itself good* — has been validated by the first ~10 reviews. See
+product question — _is the no-seek, radio-like listening experience
+itself good_ — has been validated by the first ~10 reviews. See
 [ROADMAP.md](ROADMAP.md).
 
 ### Why the current architecture doesn't block this later
