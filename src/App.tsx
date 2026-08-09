@@ -3,13 +3,16 @@ import { router } from './app/router'
 import { PlayerProvider } from './features/player/PlayerContext'
 import { FavoritesProvider } from './features/favorites/FavoritesContext'
 import { PlaylistsProvider } from './features/playlists/PlaylistsContext'
+import { RecentlyPlayedProvider } from './features/recently-played/RecentlyPlayedContext'
 
 function App() {
   return (
     <FavoritesProvider>
       <PlaylistsProvider>
         <PlayerProvider>
-          <RouterProvider router={router} />
+          <RecentlyPlayedProvider>
+            <RouterProvider router={router} />
+          </RecentlyPlayedProvider>
         </PlayerProvider>
       </PlaylistsProvider>
     </FavoritesProvider>

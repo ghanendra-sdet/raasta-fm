@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { categoryGroups, getCategoriesByGroup } from '../data/categories'
+import { RecentlyPlayedSection } from '../features/recently-played/RecentlyPlayedSection'
 
 export default function Home() {
   return (
@@ -8,6 +9,8 @@ export default function Home() {
         <h1 className="text-2xl font-semibold tracking-tight">Raasta FM</h1>
         <p className="mt-1 text-neutral-400">Choose your journey.</p>
       </div>
+
+      <RecentlyPlayedSection />
 
       {categoryGroups.map((group) => (
         <section key={group.id}>
