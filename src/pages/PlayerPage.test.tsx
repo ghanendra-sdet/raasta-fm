@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import type { Track } from '../music/types'
 import { PlayerProvider, usePlayer } from '../features/player/PlayerContext'
 import { FavoritesProvider } from '../features/favorites/FavoritesContext'
+import { PlaylistsProvider } from '../features/playlists/PlaylistsContext'
 import PlayerPage from './PlayerPage'
 
 const tracks: Track[] = [
@@ -22,12 +23,14 @@ function renderPlayer(seedTracks: Track[] | null = tracks) {
 
   const utils = render(
     <FavoritesProvider>
-      <PlayerProvider>
-        <MemoryRouter>
-          <Capture />
-          <PlayerPage />
-        </MemoryRouter>
-      </PlayerProvider>
+      <PlaylistsProvider>
+        <PlayerProvider>
+          <MemoryRouter>
+            <Capture />
+            <PlayerPage />
+          </MemoryRouter>
+        </PlayerProvider>
+      </PlaylistsProvider>
     </FavoritesProvider>,
   )
 

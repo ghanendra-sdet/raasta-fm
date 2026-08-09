@@ -6,6 +6,7 @@ import StationPage from '../pages/StationPage'
 import PlayerPage from '../pages/PlayerPage'
 import Favorites from '../pages/Favorites'
 import Playlists from '../pages/Playlists'
+import PlaylistDetail from '../pages/PlaylistDetail'
 import DriverMode from '../pages/DriverMode'
 
 export const router = createBrowserRouter([
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: '/now-playing', element: <PlayerPage /> },
       { path: '/favorites', element: <Favorites /> },
       { path: '/playlists', element: <Playlists /> },
+      { path: '/playlists/:playlistId', element: <PlaylistDetail /> },
     ],
   },
   // Rendered outside AppLayout on purpose — Driver Mode has no nav chrome.
