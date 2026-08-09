@@ -26,3 +26,13 @@ export const demoTracks: CatalogTrack[] = categories.flatMap((category) =>
 export function getTracksForCategory(categoryId: string): CatalogTrack[] {
   return demoTracks.filter((track) => track.categoryId === categoryId)
 }
+
+/**
+ * Resolves a stored track ID (e.g. a favorite) against the current catalog.
+ * Returns undefined for a stale/unknown ID instead of throwing — callers
+ * (see FavoritesContext) filter these out rather than crash or show a
+ * broken row.
+ */
+export function getTrackById(trackId: string): CatalogTrack | undefined {
+  return demoTracks.find((track) => track.id === trackId)
+}

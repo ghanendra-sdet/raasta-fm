@@ -1,12 +1,15 @@
 import { RouterProvider } from 'react-router-dom'
 import { router } from './app/router'
 import { PlayerProvider } from './features/player/PlayerContext'
+import { FavoritesProvider } from './features/favorites/FavoritesContext'
 
 function App() {
   return (
-    <PlayerProvider>
-      <RouterProvider router={router} />
-    </PlayerProvider>
+    <FavoritesProvider>
+      <PlayerProvider>
+        <RouterProvider router={router} />
+      </PlayerProvider>
+    </FavoritesProvider>
   )
 }
 

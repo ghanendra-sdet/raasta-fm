@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import type { Track } from '../music/types'
 import { PlayerProvider, usePlayer } from '../features/player/PlayerContext'
+import { FavoritesProvider } from '../features/favorites/FavoritesContext'
 import PlayerPage from './PlayerPage'
 
 const tracks: Track[] = [
@@ -20,12 +21,14 @@ function renderPlayer(seedTracks: Track[] | null = tracks) {
   }
 
   const utils = render(
-    <PlayerProvider>
-      <MemoryRouter>
-        <Capture />
-        <PlayerPage />
-      </MemoryRouter>
-    </PlayerProvider>,
+    <FavoritesProvider>
+      <PlayerProvider>
+        <MemoryRouter>
+          <Capture />
+          <PlayerPage />
+        </MemoryRouter>
+      </PlayerProvider>
+    </FavoritesProvider>,
   )
 
   if (seedTracks) {

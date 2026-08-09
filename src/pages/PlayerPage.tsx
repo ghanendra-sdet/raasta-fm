@@ -3,6 +3,7 @@ import { usePlayer } from '../features/player/PlayerContext'
 import { TrackArtwork } from '../features/player/TrackArtwork'
 import { NowPlayingDisplay } from '../features/player/NowPlayingDisplay'
 import { PlayerControls } from '../features/player/PlayerControls'
+import { FavoriteButton } from '../features/favorites/FavoriteButton'
 
 export default function PlayerPage() {
   const { currentTrack, playbackState } = usePlayer()
@@ -27,6 +28,7 @@ export default function PlayerPage() {
       <TrackArtwork trackId={currentTrack.id} isPlaying={playbackState === 'playing'} />
       <NowPlayingDisplay track={currentTrack} playbackState={playbackState} />
       <PlayerControls />
+      <FavoriteButton />
     </div>
   )
 }
