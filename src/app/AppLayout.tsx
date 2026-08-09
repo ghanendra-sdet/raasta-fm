@@ -22,10 +22,9 @@ export default function AppLayout() {
                 to={item.to}
                 end={item.end}
                 className={({ isActive }) =>
-                  clsx(
-                    'text-neutral-400 transition-colors hover:text-neutral-100',
-                    isActive && 'text-amber-400',
-                  )
+                  `text-neutral-400 transition-colors hover:text-neutral-100 ${
+                    isActive ? 'text-amber-400' : ''
+                  }`
                 }
               >
                 {item.label}
