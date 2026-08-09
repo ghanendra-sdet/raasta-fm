@@ -1,7 +1,12 @@
 import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  plugins: [react()],
   test: {
-    environment: 'node',
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
+    // Playwright owns everything under tests/ (see playwright.config.ts).
+    exclude: ['node_modules/**', 'tests/**'],
   },
 })

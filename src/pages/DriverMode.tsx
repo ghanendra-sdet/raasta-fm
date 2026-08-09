@@ -1,19 +1,39 @@
 import { Link } from 'react-router-dom'
+import { usePlayer } from '../features/player/PlayerContext'
+import { TrackArtwork } from '../features/player/TrackArtwork'
+import { NowPlayingDisplay } from '../features/player/NowPlayingDisplay'
+import { PlayerControls } from '../features/player/PlayerControls'
 
 /**
  * Deliberately rendered outside the main app layout/nav — Driver Mode is
- * playback-only by design, never a browsing surface. See docs/UX.md.
+ * playback-only by design, never a browsing surface. See docs/UX.md. Reuses
+ * the same player components as /now-playing, just larger, so playback
+ * logic and visual identity aren't duplicated.
  */
 export default function DriverMode() {
+  const { currentTrack, playbackState } = usePlayer()
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-neutral-950 px-6 text-center text-neutral-100">
-      <p className="text-sm tracking-[0.2em] text-neutral-500 uppercase">Raasta FM</p>
-      <h1 className="text-xl font-medium text-neutral-300">Driver Mode</h1>
-      <p className="max-w-xs text-neutral-500">
-        Playback-only controls land here in Step 13, once the player exists. No browsing in this
-        view — pick a station before you drive.
-      </p>
-      <Link to="/" className="mt-4 text-sm text-amber-400 underline underline-offset-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-neutral-950 px-6 py-10 text-center text-neutral-100">
+      <p className="text-xs font-medium tracking-[0.35em] text-neutral-500 uppercase">Raasta FM</p>
+
+      {currentTrack ? (
+        <>
+          <TrackArtwork
+            trackId={currentTrack.id}
+            isPlaying={playbackState === 'playing'}
+            size="large"
+          />
+          <NowPlayingDisplay track={currentTrack} playbackState={playbackState} />
+          <PlayerControls size="large" />
+        </>
+      ) : (
+        <p className="max-w-xs text-neutral-500">
+          No station selected. Exit Driver Mode and pick one before you drive.
+        </p>
+      )}
+
+      <Link to="/" className="mt-4 text-sm text-neutral-500 underline underline-offset-4">
         Exit Driver Mode
       </Link>
     </main>
