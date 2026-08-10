@@ -32,10 +32,11 @@ function useClock() {
  * MockMusicProvider used everywhere else in the app.
  *
  * Temporary public-review configuration: this is also what renders at
- * "/" for the 10-user experiment (see src/app/router.tsx) — no card, no
- * dashboard, just title/artist/artwork/progress/controls integrated
- * directly over the roadside illustration, inspired by saloon.wtf's
- * simplicity in spirit only (no copied layout, code, or assets).
+ * "/" for the 10-user experiment (see src/app/router.tsx). The player is
+ * one horizontal glass pill (SimpleRadioPlayer + ExperimentalPlayerControls
+ * together) sitting low over the illustrated scene — not a dashboard, not
+ * multiple stacked panels — inspired by saloon.wtf's simplicity and
+ * integration in spirit only (no copied layout, code, or assets).
  *
  * Favorite acts on the shared app player state (unchanged, see
  * FavoriteButton) rather than the YouTube-sourced track — favoriting a
@@ -69,42 +70,50 @@ export default function DriverMode() {
     <main className="relative flex min-h-screen flex-col overflow-hidden bg-neutral-950 text-neutral-100">
       <RoadsideBackground />
 
-      <div className="relative px-4 pt-4 text-xs text-neutral-200/80">
+      <div className="relative flex items-start justify-between px-4 pt-4 text-xs text-neutral-200/80">
         <span suppressHydrationWarning>
           {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
+
+        <div className="absolute inset-x-0 top-4 flex flex-col items-center gap-1.5">
+          <p className="text-xs font-semibold tracking-[0.4em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+            Raasta FM
+          </p>
+          <span
+            className="flex items-center gap-1.5 text-xs text-neutral-200/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+            title="Demo value — live presence not yet implemented"
+          >
+            <span aria-hidden="true" className="text-emerald-400">
+              ●
+            </span>
+            {DEMO_ONLINE_COUNT} online
+          </span>
+        </div>
       </div>
 
-      <div className="relative flex flex-1 flex-col items-center justify-center gap-4 px-4 py-6">
-        <p className="text-sm font-semibold tracking-[0.4em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
-          Raasta FM
-        </p>
+      <div className="relative flex flex-1 flex-col items-center justify-end gap-3 px-4 pb-8">
+        {/*
+          One floating glass pill: artwork/title/artist/progress on the
+          left, playback controls on the right — a single piece of glass
+          sitting inside the scene, not a dashboard or stacked panels.
+        */}
+        <div className="mt-2 flex w-full max-w-xl flex-col gap-3 rounded-3xl border border-white/15 bg-white/10 px-4 py-3 shadow-[0_8px_36px_rgba(0,0,0,0.45)] backdrop-blur-md sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4">
+          <SimpleRadioPlayer
+            currentTrack={player.currentTrack}
+            progress={player.progress}
+            error={player.error}
+            thumbnailFailed={thumbnailFailed}
+            onThumbnailError={() => setThumbnailFailed(true)}
+          />
 
-        <span
-          className="flex items-center gap-1.5 text-xs text-neutral-200/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
-          title="Demo value — live presence not yet implemented"
-        >
-          <span aria-hidden="true" className="text-emerald-400">
-            ●
-          </span>
-          {DEMO_ONLINE_COUNT} online
-        </span>
-
-        <SimpleRadioPlayer
-          currentTrack={player.currentTrack}
-          progress={player.progress}
-          error={player.error}
-          thumbnailFailed={thumbnailFailed}
-          onThumbnailError={() => setThumbnailFailed(true)}
-        />
-
-        <ExperimentalPlayerControls
-          playbackState={player.playbackState}
-          disabled={!hasTrack}
-          onPrevious={player.previous}
-          onTogglePlayPause={player.togglePlayPause}
-          onNext={player.next}
-        />
+          <ExperimentalPlayerControls
+            playbackState={player.playbackState}
+            disabled={!hasTrack}
+            onPrevious={player.previous}
+            onTogglePlayPause={player.togglePlayPause}
+            onNext={player.next}
+          />
+        </div>
 
         <FavoriteButton />
       </div>

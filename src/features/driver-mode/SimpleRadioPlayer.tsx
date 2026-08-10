@@ -38,12 +38,12 @@ interface SimpleRadioPlayerProps {
 }
 
 /**
- * The minimal, saloon.wtf-inspired-in-spirit-only radio interface: title,
- * artist, artwork, a display-only progress readout — no card, no panel, no
- * background fill of its own. Sits directly over RoadsideBackground, with
- * drop-shadow on text for legibility instead of an opaque container.
- * Previous/Play-Pause/Next and Favorite are rendered by the caller
- * (DriverMode.tsx) using the existing shared components.
+ * The minimal, saloon.wtf-inspired-in-spirit-only radio interface: circular
+ * artwork on the left, title/artist/display-only progress in the center.
+ * Renders its own content only — the caller (DriverMode.tsx) wraps this
+ * together with playback controls in one horizontal glass pill so the
+ * whole player reads as a single floating piece of glass sitting inside
+ * the illustrated scene, not a dashboard.
  */
 export function SimpleRadioPlayer({
   currentTrack,
@@ -61,28 +61,9 @@ export function SimpleRadioPlayer({
   const percent = duration > 0 ? Math.min(100, (current / duration) * 100) : 0
 
   return (
-    <div className="flex flex-col items-center gap-3 text-center">
-      {error ? (
-        <p className="max-w-xs text-sm text-rose-400 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
-          {error}
-        </p>
-      ) : isLoading ? (
-        <p className="text-sm text-neutral-300 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
-          Tuning in&hellip;
-        </p>
-      ) : (
-        <>
-          <p className="max-w-[16rem] truncate text-lg font-semibold text-neutral-50 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] sm:max-w-xs">
-            {currentTrack?.title}
-          </p>
-          <p className="max-w-[16rem] truncate text-sm text-neutral-200 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] sm:max-w-xs">
-            {currentTrack?.artist}
-          </p>
-        </>
-      )}
-
+    <div className="flex min-w-0 flex-1 items-center gap-3 text-left sm:gap-4">
       <div
-        className="relative mt-1 h-28 w-28 shrink-0 overflow-hidden rounded-full border-2 border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] sm:h-32 sm:w-32"
+        className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.5)] sm:h-16 sm:w-16"
         style={{
           backgroundImage: `radial-gradient(circle at 35% 30%, hsl(${hue} 65% 24%) 0%, hsl(${hue} 55% 12%) 55%, #0a0a0a 100%)`,
         }}
@@ -99,17 +80,34 @@ export function SimpleRadioPlayer({
         )}
       </div>
 
-      {!isLoading && (
-        <div className="mt-1 flex w-56 flex-col gap-1">
-          <div aria-hidden="true" className="h-1 w-full overflow-hidden rounded-full bg-black/40">
-            <div className="h-full rounded-full bg-amber-400" style={{ width: `${percent}%` }} />
+      <div className="min-w-0 flex-1">
+        {error ? (
+          <p className="truncate text-sm text-rose-300">{error}</p>
+        ) : isLoading ? (
+          <p className="text-sm text-neutral-100/90">Tuning in&hellip;</p>
+        ) : (
+          <>
+            <p className="truncate text-sm font-semibold text-neutral-50 sm:text-base">
+              {currentTrack?.title}
+            </p>
+            <p className="truncate text-xs text-neutral-200/85 sm:text-sm">
+              {currentTrack?.artist}
+            </p>
+          </>
+        )}
+
+        {!isLoading && (
+          <div className="mt-1.5 flex flex-col gap-1">
+            <div aria-hidden="true" className="h-1 w-full overflow-hidden rounded-full bg-black/30">
+              <div className="h-full rounded-full bg-amber-400" style={{ width: `${percent}%` }} />
+            </div>
+            <div className="flex justify-between font-mono text-[10px] tabular-nums text-white/70">
+              <span>{formatTime(current)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
           </div>
-          <div className="flex justify-between font-mono text-[11px] tabular-nums text-white/75 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
-            <span>{formatTime(current)}</span>
-            <span>{formatTime(duration)}</span>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

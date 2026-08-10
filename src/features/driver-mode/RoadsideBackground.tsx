@@ -1,16 +1,20 @@
 /**
- * Original Raasta FM illustration — evening Indian roadside scene
- * (public/img/raasta-driver-mode.svg): a barber and customer outside a
- * small shop, a tea stall with a subtle "RAASTA FM" signboard, a parked
- * auto-rickshaw and bus, roadside trees and electric poles, under a warm
- * dusk sky with a grain/paper texture. Hand-authored from scratch — not
- * traced or derived from any reference image. Purely decorative, so it's
- * hidden from assistive tech.
+ * Original Raasta FM illustration — a cinematic rear-following view down a
+ * village road at dusk, behind a large music bus, toward chai stalls,
+ * houses, shops, trees and electric poles either side of the road
+ * (public/img/raasta-driver-mode.svg). Hand-authored from scratch as vector
+ * primitives — not traced, embedded, or derived from any reference image or
+ * other product's assets. Purely decorative, so it's hidden from assistive
+ * tech.
+ *
+ * The lower band of the composition (road surface, no faces/signage) is
+ * deliberately left visually calm so the SimpleRadioPlayer glass pill reads
+ * clearly over it.
  *
  * Rendered as a CSS background (cover + bottom-anchored) rather than an
  * inline <img>/<svg> so it crops predictably on narrow viewports: the
- * lower band (shops, road, the player-safe area) stays visible instead of
- * being pushed off-screen the way a top-anchored crop would.
+ * lower band (road, the player-safe area) stays visible instead of being
+ * pushed off-screen the way a top-anchored crop would.
  */
 export function RoadsideBackground() {
   return (

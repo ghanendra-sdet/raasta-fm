@@ -14,7 +14,8 @@ test('"/" is the public landing route and renders Driver Mode, not the normal ap
   // dead-end public review experience with the menu fully disabled.
   await expect(page.getByRole('link')).toHaveCount(0)
 
-  // No FloatingPlayer card/pill — the simplified UI has no such container.
+  // No legacy FloatingPlayer card (a different, larger blur strength than
+  // the current player pill's `.backdrop-blur-md`).
   await expect(page.locator('.backdrop-blur')).toHaveCount(0)
 })
 

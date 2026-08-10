@@ -109,12 +109,11 @@ describe('DriverMode (experimental)', () => {
     expect(screen.getAllByText('0:00')).toHaveLength(2)
   })
 
-  it('does not render a FloatingPlayer card/pill container', () => {
+  it('renders exactly one player pill, not multiple stacked panels', () => {
     hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
     renderDriverMode()
 
-    expect(document.querySelector('.backdrop-blur')).toBeNull()
-    expect(document.querySelector('.rounded-\\[2rem\\]')).toBeNull()
+    expect(document.querySelectorAll('.backdrop-blur-md')).toHaveLength(1)
   })
 
   it('renders the Favorite control', () => {

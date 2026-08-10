@@ -9,10 +9,12 @@ interface ExperimentalPlayerControlsProps {
 }
 
 /**
- * EXPERIMENTAL — visually matches PlayerControls (large, circular, amber)
- * but is wired to useExperimentalYouTubePlayer instead of the app-wide
- * usePlayer(), so it doesn't touch the shared player component. Still
- * Previous / Play-Pause / Next only — no seek, no timestamp.
+ * EXPERIMENTAL — wired to useExperimentalYouTubePlayer instead of the
+ * app-wide usePlayer(), so it doesn't touch the shared player component.
+ * Sized and styled to sit inline inside the glass pill alongside
+ * SimpleRadioPlayer (see DriverMode.tsx) rather than as its own large,
+ * separate control cluster. Still Previous / Play-Pause / Next only — no
+ * seek, no timestamp.
  */
 export function ExperimentalPlayerControls({
   playbackState,
@@ -24,13 +26,13 @@ export function ExperimentalPlayerControls({
   const isPlaying = playbackState === 'playing'
 
   return (
-    <div className="flex items-center justify-center gap-6">
+    <div className="mx-auto flex shrink-0 items-center gap-2 sm:mx-0 sm:gap-3">
       <button
         type="button"
         aria-label="Previous track"
         disabled={disabled}
         onClick={onPrevious}
-        className="flex h-14 w-14 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900 text-xl text-neutral-200 transition-colors hover:border-amber-500 hover:text-amber-400 disabled:opacity-30"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-base text-neutral-100 transition-colors hover:border-amber-400 hover:text-amber-300 disabled:opacity-30 sm:h-10 sm:w-10"
       >
         <span aria-hidden="true">⏮</span>
       </button>
@@ -39,7 +41,7 @@ export function ExperimentalPlayerControls({
         aria-label={isPlaying ? 'Pause' : 'Play'}
         disabled={disabled}
         onClick={onTogglePlayPause}
-        className="flex h-20 w-20 items-center justify-center rounded-full bg-amber-500 text-3xl text-neutral-950 transition-transform hover:scale-105 disabled:scale-100 disabled:bg-neutral-800 disabled:text-neutral-600"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-xl text-neutral-950 shadow-[0_2px_10px_rgba(0,0,0,0.4)] transition-transform hover:scale-105 disabled:scale-100 disabled:bg-white/20 disabled:text-neutral-400 sm:h-14 sm:w-14"
       >
         <span aria-hidden="true">{isPlaying ? '⏸' : '▶'}</span>
       </button>
@@ -48,7 +50,7 @@ export function ExperimentalPlayerControls({
         aria-label="Next track"
         disabled={disabled}
         onClick={onNext}
-        className="flex h-14 w-14 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900 text-xl text-neutral-200 transition-colors hover:border-amber-500 hover:text-amber-400 disabled:opacity-30"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/10 text-base text-neutral-100 transition-colors hover:border-amber-400 hover:text-amber-300 disabled:opacity-30 sm:h-10 sm:w-10"
       >
         <span aria-hidden="true">⏭</span>
       </button>
