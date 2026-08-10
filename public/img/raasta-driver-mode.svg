@@ -110,6 +110,9 @@
       <path d="M40 620 q10 -70 5 -100 q-4 30 -4 100z" />
       <path d="M1560 620 q10 -80 4 -110 q-5 35 -5 110z" />
     </g>
+    <!-- small, soft, distant background trees -->
+    <use href="#tree" x="350" y="558" transform="scale(0.32)" transform-origin="350 558" opacity="0.55" filter="url(#lightBlur)" />
+    <use href="#tree" x="1260" y="562" transform="scale(0.28)" transform-origin="1260 562" opacity="0.5" filter="url(#lightBlur)" />
   </g>
 
   <rect x="0" y="600" width="1600" height="60" fill="url(#haze)" />
@@ -122,11 +125,15 @@
     <path d="M170 512 Q 800 575 1470 512" fill="none" stroke="#241b1b" stroke-width="2" opacity="0.6" />
   </g>
 
-  <!-- roadside trees, middle ground -->
+  <!-- roadside trees, middle ground — contact shadows ground each trunk
+       base (local y=120 in the #tree symbol) at the point it meets the
+       terrain, so neither tree reads as floating above the haze band. -->
   <g id="trees-mid" opacity="0.95">
+    <ellipse cx="90" cy="564" rx="26" ry="6" fill="#000" opacity="0.28" />
     <use href="#tree" x="90" y="480" transform="scale(0.7)" transform-origin="90 480">
       <animateTransform attributeName="transform" type="rotate" values="-1 90 480;1 90 480;-1 90 480" dur="5s" additive="sum" repeatCount="indefinite" />
     </use>
+    <ellipse cx="1500" cy="566" rx="30" ry="7" fill="#000" opacity="0.28" />
     <use href="#tree" x="1500" y="470" transform="scale(0.8)" transform-origin="1500 470">
       <animateTransform attributeName="transform" type="rotate" values="1 1500 470;-1 1500 470;1 1500 470" dur="6s" additive="sum" repeatCount="indefinite" />
     </use>
@@ -198,11 +205,14 @@
     </g>
   </g>
 
-  <!-- foreground trees framing the scene -->
+  <!-- foreground trees framing the scene — largest of the three depth
+       tiers, each grounded with a contact shadow at its trunk base. -->
   <g id="trees-foreground">
+    <ellipse cx="10" cy="900" rx="55" ry="12" fill="#000" opacity="0.32" />
     <use href="#tree" x="10" y="720" transform="scale(1.5)" transform-origin="10 720">
       <animateTransform attributeName="transform" type="rotate" values="-1.5 10 720;1.5 10 720;-1.5 10 720" dur="4.5s" additive="sum" repeatCount="indefinite" />
     </use>
+    <ellipse cx="1580" cy="892" rx="58" ry="13" fill="#000" opacity="0.32" />
     <use href="#tree" x="1580" y="700" transform="scale(1.6)" transform-origin="1580 700">
       <animateTransform attributeName="transform" type="rotate" values="1.5 1580 700;-1.5 1580 700;1.5 1580 700" dur="5.5s" additive="sum" repeatCount="indefinite" />
     </use>
@@ -212,15 +222,42 @@
   <g id="road-group">
     <path d="M660 620 L940 620 L1180 1000 L420 1000 Z" fill="url(#road)" />
     <path d="M660 620 L940 620 L1180 1000 L420 1000 Z" fill="none" stroke="#000" stroke-opacity="0.3" />
-    <!-- lane markers, animated toward viewer -->
-    <g id="lane-markers" fill="#d8a13c" opacity="0.9">
-      <g>
-        <polygon points="793,640 807,640 812,672 788,672" />
-        <polygon points="778,700 822,700 834,748 766,748" />
-        <polygon points="756,780 844,780 862,850 738,850" />
-        <polygon points="722,900 878,900 905,1000 695,1000" />
-        <animateTransform attributeName="transform" type="translate" values="0 0;0 190" dur="1.1s" repeatCount="indefinite" />
-      </g>
+    <!--
+      Center-line dashes: a single vanishing point at the road's top-center
+      (800,620). Each dash's x/y/width/height is keyframed from one
+      consistent perspective curve — position and size both grow toward
+      the viewer, x always stays centered on 800 so there's no lateral
+      drift — rather than a handful of independently-sized shapes. Four
+      copies of the identical animation, staggered by a quarter-cycle
+      each (negative `begin` values start them mid-cycle immediately),
+      create a continuous flow of dashes with no single dash jumping or
+      resetting sideways.
+    -->
+    <g id="lane-markers" fill="#d8a13c" fill-opacity="0.88">
+      <rect x="794" y="620" width="12" height="10" rx="2">
+        <animate attributeName="x" values="794;790;783.4;775.3;766;755.7;744.5;732.6;720" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="width" values="12;20;33.3;49.5;68.1;88.6;111;134.8;160" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="y" values="620;624;638;664;702.7;755.1;821.8;903.3;1000" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="height" values="10;13.2;19.8;28.7;39.7;52.4;66.8;82.7;100" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+      </rect>
+      <rect x="794" y="620" width="12" height="10" rx="2">
+        <animate attributeName="x" begin="-0.6s" values="794;790;783.4;775.3;766;755.7;744.5;732.6;720" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="width" begin="-0.6s" values="12;20;33.3;49.5;68.1;88.6;111;134.8;160" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="y" begin="-0.6s" values="620;624;638;664;702.7;755.1;821.8;903.3;1000" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="height" begin="-0.6s" values="10;13.2;19.8;28.7;39.7;52.4;66.8;82.7;100" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+      </rect>
+      <rect x="794" y="620" width="12" height="10" rx="2">
+        <animate attributeName="x" begin="-1.2s" values="794;790;783.4;775.3;766;755.7;744.5;732.6;720" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="width" begin="-1.2s" values="12;20;33.3;49.5;68.1;88.6;111;134.8;160" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="y" begin="-1.2s" values="620;624;638;664;702.7;755.1;821.8;903.3;1000" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="height" begin="-1.2s" values="10;13.2;19.8;28.7;39.7;52.4;66.8;82.7;100" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+      </rect>
+      <rect x="794" y="620" width="12" height="10" rx="2">
+        <animate attributeName="x" begin="-1.8s" values="794;790;783.4;775.3;766;755.7;744.5;732.6;720" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="width" begin="-1.8s" values="12;20;33.3;49.5;68.1;88.6;111;134.8;160" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="y" begin="-1.8s" values="620;624;638;664;702.7;755.1;821.8;903.3;1000" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="height" begin="-1.8s" values="10;13.2;19.8;28.7;39.7;52.4;66.8;82.7;100" keyTimes="0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1" dur="2.4s" repeatCount="indefinite" />
+      </rect>
     </g>
     <rect x="0" y="600" width="1600" height="420" fill="url(#groundFade)" opacity="0.25" />
   </g>
@@ -346,28 +383,45 @@
     <!-- rear bumper + exhaust glow -->
     <rect x="-232" y="150" width="464" height="10" fill="#1a1414" />
 
-    <!-- wheels -->
-    <g id="wheel-left" transform="translate(-150,178)">
-      <circle r="34" fill="#161010" />
-      <circle r="14" fill="#5a4a44" />
-      <g stroke="#161010" stroke-width="4">
-        <line x1="-14" y1="0" x2="14" y2="0">
-          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
+    <!--
+      Wheels, redesigned to unmistakably read as a REAR view rather than a
+      side view: each tire is a flattened, edge-on vertical shape (not a
+      full round disc — a full circle low on the body is what was reading
+      as a side-view wheel) tucked into a dark wheel-arch cut into the
+      body/bumper line, positioned symmetrically at the outer corners of
+      the rear face. Only the small central hub — plausible to glimpse
+      face-on even directly behind the vehicle — rotates, giving a motion
+      cue without reintroducing a side-view silhouette. Both hubs share
+      the same rotation values (0→360, i.e. clockwise as seen by a viewer
+      directly behind the bus watching it roll forward/away) so they turn
+      in sync in the same physical direction.
+    -->
+    <rect x="-222" y="140" width="60" height="52" rx="14" fill="#1a1414" />
+    <rect x="162" y="140" width="60" height="52" rx="14" fill="#1a1414" />
+
+    <g id="wheel-left" transform="translate(-192,178)">
+      <rect x="-20" y="-38" width="40" height="76" rx="16" fill="#161010" />
+      <rect x="-20" y="-38" width="40" height="76" rx="16" fill="none" stroke="#000" stroke-opacity="0.4" />
+      <circle r="15" fill="#4a3a36" />
+      <g stroke="#161010" stroke-width="3.5">
+        <line x1="-11" y1="0" x2="11" y2="0">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
         </line>
-        <line x1="0" y1="-14" x2="0" y2="14">
-          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
+        <line x1="0" y1="-11" x2="0" y2="11">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
         </line>
       </g>
     </g>
-    <g id="wheel-right" transform="translate(150,178)">
-      <circle r="34" fill="#161010" />
-      <circle r="14" fill="#5a4a44" />
-      <g stroke="#161010" stroke-width="4">
-        <line x1="-14" y1="0" x2="14" y2="0">
-          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
+    <g id="wheel-right" transform="translate(192,178)">
+      <rect x="-20" y="-38" width="40" height="76" rx="16" fill="#161010" />
+      <rect x="-20" y="-38" width="40" height="76" rx="16" fill="none" stroke="#000" stroke-opacity="0.4" />
+      <circle r="15" fill="#4a3a36" />
+      <g stroke="#161010" stroke-width="3.5">
+        <line x1="-11" y1="0" x2="11" y2="0">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
         </line>
-        <line x1="0" y1="-14" x2="0" y2="14">
-          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
+        <line x1="0" y1="-11" x2="0" y2="11">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
         </line>
       </g>
     </g>
