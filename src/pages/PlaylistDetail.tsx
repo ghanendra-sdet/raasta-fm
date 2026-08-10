@@ -148,7 +148,7 @@ export default function PlaylistDetail() {
         <div className="mt-10 flex flex-col items-center gap-1 text-center">
           <p className="text-neutral-300">This playlist is empty.</p>
           <p className="max-w-xs text-sm text-neutral-500">Add songs from the Raasta FM catalog.</p>
-          <Link to="/" className="mt-2 text-sm text-amber-400 underline underline-offset-4">
+          <Link to="/home" className="mt-2 text-sm text-amber-400 underline underline-offset-4">
             Browse stations
           </Link>
         </div>

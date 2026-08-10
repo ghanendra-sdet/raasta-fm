@@ -15,7 +15,7 @@ export default function CategoryPage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Category not found</h1>
         <Link
-          to="/"
+          to="/home"
           className="mt-2 inline-block text-sm text-amber-400 underline underline-offset-4"
         >
           Back to Home
@@ -32,7 +32,7 @@ export default function CategoryPage() {
 
   return (
     <div>
-      <Link to="/" className="text-sm text-neutral-400 underline-offset-4 hover:underline">
+      <Link to="/home" className="text-sm text-neutral-400 underline-offset-4 hover:underline">
         ← Home
       </Link>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight">{category.label}</h1>

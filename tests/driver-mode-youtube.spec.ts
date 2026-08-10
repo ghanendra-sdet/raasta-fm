@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+test('"/" is the public landing route and renders Driver Mode, not the normal app nav', async ({
+  page,
+}) => {
+  await page.goto('/')
+
+  await expect(page.getByRole('navigation')).toHaveCount(0)
+  await expect(page.getByRole('link', { name: 'Home' })).toHaveCount(0)
+  await expect(page.getByRole('link', { name: 'My Playlists' })).toHaveCount(0)
+  await expect(page.getByText('Raasta FM')).toBeVisible()
+
+  // No exit/navigation link back to the rest of the app — this is a
+  // dead-end public review experience with the menu fully disabled.
+  await expect(page.getByRole('link')).toHaveCount(0)
+
+  // No FloatingPlayer card/pill — the simplified UI has no such container.
+  await expect(page.locator('.backdrop-blur')).toHaveCount(0)
+})
+
 test('experimental Driver Mode: loads, no nav chrome, visible YouTube embed, controls', async ({
   page,
 }) => {
@@ -25,7 +43,7 @@ test('experimental Driver Mode: loads, no nav chrome, visible YouTube embed, con
   expect(hasOverflow).toBe(false)
 
   // Our own playback controls are present alongside the embed (not
-  // overlaid on top of it — separate elements in the floating card).
+  // overlaid on top of it — separate elements in the layout).
   await expect(page.getByRole('button', { name: 'Previous track' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Next track' })).toBeVisible()
   await expect(page.getByRole('button', { name: /^(Play|Pause)$/ })).toBeVisible()
@@ -34,8 +52,9 @@ test('experimental Driver Mode: loads, no nav chrome, visible YouTube embed, con
   // No seek/progress UI of Raasta FM's own.
   await expect(page.locator('main input[type="range"]')).toHaveCount(0)
 
-  // Exit link back to the normal app.
-  await expect(page.getByRole('link', { name: 'Exit Driver Mode' })).toBeVisible()
+  // No exit/navigation link — the menu is fully disabled for this
+  // dead-end public review experience.
+  await expect(page.getByRole('link')).toHaveCount(0)
 
   // Filter out third-party noise from the embedded YouTube iframe itself —
   // we only care about errors from our own application code.

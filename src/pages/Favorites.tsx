@@ -23,7 +23,7 @@ export default function Favorites() {
           <p className="max-w-xs text-sm text-neutral-500">
             When you find a song you love, tap the heart and it will appear here.
           </p>
-          <Link to="/" className="mt-2 text-sm text-amber-400 underline underline-offset-4">
+          <Link to="/home" className="mt-2 text-sm text-amber-400 underline underline-offset-4">
             Browse stations
           </Link>
         </div>

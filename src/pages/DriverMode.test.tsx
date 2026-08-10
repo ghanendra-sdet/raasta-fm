@@ -94,23 +94,36 @@ describe('DriverMode (experimental)', () => {
     hookState.progress = { currentSeconds: 11, durationSeconds: 304 }
     renderDriverMode()
 
-    expect(screen.getByText('0:11 / 5:04')).toBeInTheDocument()
+    expect(screen.getByText('0:11')).toBeInTheDocument()
+    expect(screen.getByText('5:04')).toBeInTheDocument()
     expect(screen.queryByRole('slider')).not.toBeInTheDocument()
     expect(document.querySelector('input[type="range"]')).toBeNull()
     expect(document.querySelector('[onclick]')).toBeNull()
   })
 
-  it('shows 0:00 / 0:00 gracefully when progress is not yet available', () => {
+  it('shows 0:00 gracefully when progress is not yet available', () => {
     hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
     hookState.progress = null
     renderDriverMode()
 
-    expect(screen.getByText('0:00 / 0:00')).toBeInTheDocument()
+    expect(screen.getAllByText('0:00')).toHaveLength(2)
   })
 
-  it('renders the Favorite control and an exit link', () => {
+  it('does not render a FloatingPlayer card/pill container', () => {
+    hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
+    renderDriverMode()
+
+    expect(document.querySelector('.backdrop-blur')).toBeNull()
+    expect(document.querySelector('.rounded-\\[2rem\\]')).toBeNull()
+  })
+
+  it('renders the Favorite control', () => {
     renderDriverMode()
     expect(screen.getByRole('button', { name: 'Favorite' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Exit Driver Mode' })).toBeInTheDocument()
+  })
+
+  it('has no exit/navigation links back to the rest of the app', () => {
+    renderDriverMode()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 })

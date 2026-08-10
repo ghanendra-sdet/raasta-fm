@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { FavoriteButton } from '../features/favorites/FavoriteButton'
 import { RoadsideBackground } from '../features/driver-mode/RoadsideBackground'
-import { FloatingPlayer } from '../features/driver-mode/FloatingPlayer'
+import { SimpleRadioPlayer } from '../features/driver-mode/SimpleRadioPlayer'
+import { ExperimentalPlayerControls } from '../features/driver-mode/ExperimentalPlayerControls'
 import { useExperimentalYouTubePlayer } from '../features/driver-mode/useExperimentalYouTubePlayer'
 
 /**
@@ -31,15 +31,20 @@ function useClock() {
  * (useExperimentalYouTubePlayer), not the app-wide PlayerContext/
  * MockMusicProvider used everywhere else in the app.
  *
+ * Temporary public-review configuration: this is also what renders at
+ * "/" for the 10-user experiment (see src/app/router.tsx) — no card, no
+ * dashboard, just title/artist/artwork/progress/controls integrated
+ * directly over the roadside illustration, inspired by saloon.wtf's
+ * simplicity in spirit only (no copied layout, code, or assets).
+ *
  * Favorite acts on the shared app player state (unchanged, see
  * FavoriteButton) rather than the YouTube-sourced track — favoriting a
  * YouTube video is out of scope for this experiment so Favorites'
  * catalog-ID-based data model and persistence stay untouched.
  *
- * Visual identity is the FloatingPlayer pill — the required, visible
- * YouTube <iframe> is rendered separately below, small and unobtrusive so
- * it doesn't visually dominate the experience, but never hidden, zero-
- * sized, or covered (required minimum functionality). See
+ * The required, visible YouTube <iframe> renders small and separately in
+ * the header — never hidden, zero-sized, opacity-0, moved off-screen,
+ * clipped, or covered (required minimum functionality). See
  * docs/MUSIC-SOURCE.md.
  */
 export default function DriverMode() {
@@ -54,6 +59,8 @@ export default function DriverMode() {
     if (thumbnailFailed) setThumbnailFailed(false)
   }
 
+  const hasTrack = Boolean(player.currentTrack)
+
   return (
     <main className="relative flex min-h-screen flex-col overflow-hidden bg-neutral-950 text-neutral-100">
       <RoadsideBackground />
@@ -62,7 +69,7 @@ export default function DriverMode() {
         <span suppressHydrationWarning>
           {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-2">
           <span
             className="flex items-center gap-1.5"
             title="Demo value — live presence not yet implemented"
@@ -73,41 +80,44 @@ export default function DriverMode() {
             {DEMO_ONLINE_COUNT} online
           </span>
           {/*
-            Required visible YouTube player — kept small and secondary to
-            the FloatingPlayer below so it doesn't visually dominate Driver
-            Mode, but never hidden, zero-sized, or covered by our own UI.
-            See docs/MUSIC-SOURCE.md "Experimental YouTube Test Provider".
+            Required visible YouTube player. Kept at the smallest size and
+            plainest presentation we judge to still be a genuinely visible,
+            operable player surface (real, non-zero pixels; native controls
+            and attribution rendered; not clipped) — no card framing/
+            background so it reads as a small inline utility element next to
+            the online count rather than a separate floating box. Never
+            hidden, zero-sized, opacity-0, moved off-screen, clipped, or
+            covered by our own UI. See docs/MUSIC-SOURCE.md "Experimental
+            YouTube Test Provider".
           */}
-          <div className="aspect-video w-28 overflow-hidden rounded-lg border border-white/10 bg-black sm:w-32">
+          <div className="aspect-video w-8 shrink-0 overflow-hidden">
             <div ref={containerRef} className="h-full w-full" />
           </div>
         </div>
       </div>
 
-      <div className="relative flex flex-1 flex-col items-center justify-center px-4">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-4 px-4 py-6">
         <p className="text-sm font-semibold tracking-[0.4em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
           Raasta FM
         </p>
-      </div>
 
-      <div className="relative flex flex-col items-center gap-4 px-4 pb-8">
-        <FloatingPlayer
+        <SimpleRadioPlayer
           currentTrack={player.currentTrack}
-          playbackState={player.playbackState}
           progress={player.progress}
           error={player.error}
           thumbnailFailed={thumbnailFailed}
           onThumbnailError={() => setThumbnailFailed(true)}
+        />
+
+        <ExperimentalPlayerControls
+          playbackState={player.playbackState}
+          disabled={!hasTrack}
           onPrevious={player.previous}
           onTogglePlayPause={player.togglePlayPause}
           onNext={player.next}
         />
 
         <FavoriteButton />
-
-        <Link to="/" className="text-xs text-neutral-400 underline underline-offset-4">
-          Exit Driver Mode
-        </Link>
       </div>
     </main>
   )

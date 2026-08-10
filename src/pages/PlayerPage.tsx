@@ -16,7 +16,7 @@ export default function PlayerPage() {
         <p className="max-w-xs text-neutral-400">
           Nothing queued yet. Pick a station from Home and press play.
         </p>
-        <Link to="/" className="text-sm text-amber-400 underline underline-offset-4">
+        <Link to="/home" className="text-sm text-amber-400 underline underline-offset-4">
           Browse stations
         </Link>
       </div>

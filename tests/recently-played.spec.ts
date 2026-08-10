@@ -16,7 +16,7 @@ test('recently played journey: record, order, replay, persist, clear', async ({ 
   // navigation, which would otherwise race ahead of that flush.
   await page.waitForTimeout(200)
 
-  await page.goto('/')
+  await page.goto('/home')
   await expect(page.getByText(/no songs played yet/i)).toHaveCount(0)
   expect(await recentTitles(page)).toEqual(['Sad Songs Demo Track 1'])
 
@@ -29,7 +29,7 @@ test('recently played journey: record, order, replay, persist, clear', async ({ 
   // navigation, which would otherwise race ahead of that flush.
   await page.waitForTimeout(200)
 
-  await page.goto('/')
+  await page.goto('/home')
   expect(await recentTitles(page)).toEqual(['Sad Songs Demo Track 2', 'Sad Songs Demo Track 1'])
 
   // Replay the first track from the Recently Played section — it should
@@ -41,7 +41,7 @@ test('recently played journey: record, order, replay, persist, clear', async ({ 
   // navigation, which would otherwise race ahead of that flush.
   await page.waitForTimeout(200)
 
-  await page.goto('/')
+  await page.goto('/home')
   expect(await recentTitles(page)).toEqual(['Sad Songs Demo Track 1', 'Sad Songs Demo Track 2'])
 
   // Reload and confirm the order persists.
