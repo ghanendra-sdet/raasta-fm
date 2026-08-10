@@ -70,9 +70,10 @@ solely to document a single, narrowly-scoped UX experiment run inside
 Driver Mode.
 
 **What it is.** `/driver-mode` optionally plays a single fixed **public
-YouTube playlist**, `PLTJ1PnzCWyFw`
-(https://music.youtube.com/playlist?list=PLTJ1PnzCWyFw), through the
-official YouTube IFrame Player API
+YouTube playlist**, `PLHuHXHyLu7BH71H9_USibJABiVmLNClQy` — Sony Music
+India, "Most Popular Songs" (51 tracks)
+(https://www.youtube.com/playlist?list=PLHuHXHyLu7BH71H9_USibJABiVmLNClQy),
+through the official YouTube IFrame Player API
 (https://developers.google.com/youtube/iframe_api_reference). The
 playlist is loaded by ID via the player's own `listType: 'playlist'` /
 `list` parameters (https://developers.google.com/youtube/player_parameters)
@@ -131,21 +132,21 @@ reverting `src/pages/DriverMode.tsx` — no other file depends on it.
 - Favoriting acts on the shared app player state, not the YouTube-sourced
   track — favoriting a YouTube video is out of scope for this experiment,
   so the Favorites data model and persistence are unchanged.
-- **Observed during testing: many individual videos in the current test
-  playlist have embedding disabled by their rights holder**, even though
-  they play normally on youtube.com directly — common for commercial
+- **Playlist history:** the original test playlist (`PLTJ1PnzCWyFw`) was
+  replaced after testing found many of its individual videos had
+  embedding disabled by their rights holders — common for commercial
   Hindi film-music uploads (major label channels routinely block
-  third-party embedding while allowing direct viewing). `onError` codes
+  third-party embedding while allowing direct viewing on youtube.com).
+  The current playlist (Sony Music India, above) was verified fully
+  embeddable across sampled tracks before adoption. This is a
+  content/rights characteristic of whichever playlist is configured, not
+  a defect in the provider or the embedding approach — the provider still
+  handles a blocked video gracefully regardless: `onError` codes
   100/101/150 trigger an automatic skip to the next playlist index via
   the official `cuePlaylist()` method (not a workaround — a normal API
   call), bounded by a ~9s total budget; if nothing playable is found in
   that window, Driver Mode shows a clear, honest error state instead of
-  spinning indefinitely. This is a content/rights characteristic of the
-  specific test playlist, not a defect in the provider or the embedding
-  approach — a differently-sourced playlist may behave better or worse.
-  If reviewer testing is blocked by this, the fix is picking a playlist
-  built from embedding-friendly sources, not changing this provider's
-  architecture.
+  spinning indefinitely.
 
 ## No ads
 
