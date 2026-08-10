@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img">
+  <title>Raasta FM — evening Indian roadside scene</title>
+  <desc>
+    An original, hand-authored illustration of a dusk roadside in an Indian
+    town: a barber trimming a customer's hair outside a small shop, a tea
+    stall with a vendor, a parked auto-rickshaw and bus, roadside trees and
+    electric poles, and a row of painted shopfronts under a warm evening
+    sky. A small hand-painted "RAASTA FM" signboard hangs near the tea
+    stall. Not derived from or tracing any reference photograph or artwork.
+  </desc>
+
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#171029" />
+      <stop offset="38%" stop-color="#3a1f3f" />
+      <stop offset="68%" stop-color="#7c3f3a" />
+      <stop offset="100%" stop-color="#d98a42" />
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffd28a" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#ffd28a" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#241a26" />
+      <stop offset="100%" stop-color="#0a0710" />
+    </linearGradient>
+    <radialGradient id="vignette" cx="50%" cy="42%" r="75%">
+      <stop offset="55%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.45" />
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise" />
+      <feColorMatrix in="noise" type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.06" />
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <!-- Sky -->
+  <rect x="0" y="0" width="1600" height="560" fill="url(#sky)" />
+  <circle cx="1230" cy="360" r="170" fill="url(#sunGlow)" />
+  <circle cx="1230" cy="360" r="62" fill="#ffcf82" opacity="0.9" />
+  <g fill="#e9d3c8" opacity="0.35">
+    <path d="M180 120 q14 -10 28 0 q14 -10 28 0" stroke="#e9d3c8" stroke-width="3" fill="none" />
+    <path d="M760 90 q12 -9 24 0 q12 -9 24 0" stroke="#e9d3c8" stroke-width="3" fill="none" />
+  </g>
+
+  <!-- Distant hazy skyline for depth -->
+  <path
+    d="M0 470 L60 470 60 430 130 430 130 460 220 460 220 400 300 400 300 470 1600 470 1600 560 0 560 Z"
+    fill="#2a1c3a"
+    opacity="0.55"
+  />
+
+  <!-- Midground buildings -->
+  <g stroke="#00000022" stroke-width="1">
+    <!-- Building A -->
+    <rect x="20" y="430" width="230" height="230" fill="#8a4a3a" />
+    <rect x="20" y="430" width="230" height="14" fill="#5c2f24" />
+    <g fill="#f4c98a" opacity="0.85">
+      <rect x="50" y="470" width="34" height="46" rx="3" />
+      <rect x="110" y="470" width="34" height="46" rx="3" />
+      <rect x="170" y="470" width="34" height="46" rx="3" />
+      <rect x="50" y="540" width="34" height="46" rx="3" />
+      <rect x="170" y="540" width="34" height="46" rx="3" />
+    </g>
+    <rect x="90" y="420" width="30" height="18" fill="#6b6b6b" />
+    <ellipse cx="105" cy="418" rx="17" ry="8" fill="#7a7a7a" />
+
+    <!-- Building B (taller) -->
+    <rect x="250" y="380" width="210" height="280" fill="#3f6b64" />
+    <rect x="250" y="380" width="210" height="14" fill="#274842" />
+    <g fill="#eadfc0" opacity="0.85">
+      <rect x="275" y="415" width="30" height="42" rx="14" />
+      <rect x="330" y="415" width="30" height="42" rx="14" />
+      <rect x="385" y="415" width="30" height="42" rx="14" />
+      <rect x="275" y="480" width="150" height="10" fill="#1f382f" opacity="0.6" />
+      <rect x="275" y="510" width="30" height="42" rx="3" />
+      <rect x="330" y="510" width="30" height="42" rx="3" />
+      <rect x="385" y="510" width="30" height="42" rx="3" />
+    </g>
+
+    <!-- Building C (behind shop row, center) -->
+    <rect x="460" y="450" width="330" height="210" fill="#b98a3e" />
+    <rect x="460" y="450" width="330" height="14" fill="#7d5b26" />
+    <g fill="#5a3d18" opacity="0.5">
+      <rect x="490" y="480" width="270" height="8" />
+    </g>
+
+    <!-- Building D -->
+    <rect x="790" y="410" width="250" height="250" fill="#a15b62" />
+    <rect x="790" y="410" width="250" height="14" fill="#6c3a40" />
+    <g fill="#f2d9c6" opacity="0.85">
+      <rect x="815" y="445" width="32" height="44" rx="3" />
+      <rect x="875" y="445" width="32" height="44" rx="3" />
+      <rect x="935" y="445" width="32" height="44" rx="3" />
+      <rect x="995" y="445" width="32" height="44" rx="3" />
+      <rect x="815" y="520" width="32" height="44" rx="3" />
+      <rect x="935" y="520" width="32" height="44" rx="3" />
+    </g>
+
+    <!-- Building E -->
+    <rect x="1040" y="440" width="260" height="220" fill="#506080" />
+    <rect x="1040" y="440" width="260" height="14" fill="#333f57" />
+    <g fill="#dfe4ef" opacity="0.8">
+      <rect x="1065" y="475" width="30" height="40" rx="3" />
+      <rect x="1120" y="475" width="30" height="40" rx="3" />
+      <rect x="1175" y="475" width="30" height="40" rx="3" />
+      <rect x="1230" y="475" width="30" height="40" rx="3" />
+    </g>
+
+    <!-- Building F (partial, right edge) -->
+    <rect x="1300" y="470" width="300" height="190" fill="#6b4630" />
+    <rect x="1300" y="470" width="300" height="14" fill="#432c1d" />
+    <g fill="#f0d6b0" opacity="0.8">
+      <rect x="1330" y="500" width="30" height="42" rx="3" />
+      <rect x="1385" y="500" width="30" height="42" rx="3" />
+      <rect x="1440" y="500" width="30" height="42" rx="3" />
+    </g>
+  </g>
+
+  <!-- Electric poles and sagging wires -->
+  <g stroke="#160f1f" stroke-width="4" fill="#160f1f">
+    <rect x="176" y="420" width="8" height="240" />
+    <rect x="150" y="418" width="60" height="6" />
+    <rect x="716" y="440" width="8" height="220" />
+    <rect x="690" y="438" width="60" height="6" />
+    <rect x="1236" y="430" width="8" height="230" />
+    <rect x="1210" y="428" width="60" height="6" />
+  </g>
+  <g stroke="#160f1f" stroke-width="2" fill="none" opacity="0.75">
+    <path d="M180 424 Q450 470 720 444" />
+    <path d="M720 444 Q980 480 1240 434" />
+    <path d="M180 434 Q450 478 720 452" />
+  </g>
+
+  <!-- Trees -->
+  <g>
+    <rect x="366" y="560" width="14" height="90" fill="#4a3420" />
+    <ellipse cx="373" cy="520" rx="70" ry="58" fill="#33502c" />
+    <ellipse cx="345" cy="500" rx="34" ry="26" fill="#3f6238" opacity="0.8" />
+    <ellipse cx="1008" cy="600" rx="16" ry="70" fill="#4a3420" transform="rotate(4 1008 600)" />
+    <ellipse cx="1010" cy="540" rx="76" ry="60" fill="#2c4826" />
+    <ellipse cx="985" cy="522" rx="32" ry="24" fill="#3a5a33" opacity="0.8" />
+  </g>
+
+  <!-- Roadside shopfronts (ground floor, in front of buildings) -->
+  <g>
+    <!-- Shuttered small shops -->
+    <g opacity="0.9">
+      <rect x="460" y="590" width="120" height="70" fill="#7a5a2c" />
+      <g stroke="#4a3618" stroke-width="3">
+        <line x1="470" y1="600" x2="470" y2="655" />
+        <line x1="490" y1="600" x2="490" y2="655" />
+        <line x1="510" y1="600" x2="510" y2="655" />
+        <line x1="530" y1="600" x2="530" y2="655" />
+        <line x1="550" y1="600" x2="550" y2="655" />
+        <line x1="570" y1="600" x2="570" y2="655" />
+      </g>
+    </g>
+    <g opacity="0.9">
+      <rect x="1150" y="580" width="120" height="80" fill="#5f4a63" />
+      <g stroke="#3a2c3f" stroke-width="3">
+        <line x1="1160" y1="590" x2="1160" y2="655" />
+        <line x1="1180" y1="590" x2="1180" y2="655" />
+        <line x1="1200" y1="590" x2="1200" y2="655" />
+        <line x1="1220" y1="590" x2="1220" y2="655" />
+        <line x1="1240" y1="590" x2="1240" y2="655" />
+        <line x1="1260" y1="590" x2="1260" y2="655" />
+      </g>
+    </g>
+
+    <!-- Barber shop -->
+    <g>
+      <rect x="600" y="560" width="180" height="110" fill="#5a3d18" />
+      <rect x="616" y="576" width="148" height="78" fill="#241a2c" />
+      <rect x="626" y="586" width="46" height="58" rx="3" fill="#8ea7b8" opacity="0.55" />
+      <!-- barber -->
+      <g>
+        <rect x="678" y="600" width="16" height="40" rx="6" fill="#2a2022" />
+        <circle cx="686" cy="592" r="11" fill="#8a5a3c" />
+        <path d="M694 605 l16 -10" stroke="#d8d8d8" stroke-width="3" stroke-linecap="round" />
+      </g>
+      <!-- seated customer -->
+      <g>
+        <rect x="710" y="618" width="34" height="10" fill="#3a2c22" />
+        <rect x="716" y="606" width="20" height="24" rx="5" fill="#7a3f3f" />
+        <circle cx="726" cy="596" r="10" fill="#7a5236" />
+      </g>
+    </g>
+
+    <!-- Tea stall -->
+    <g>
+      <rect x="900" y="600" width="150" height="14" fill="#8a3a2c" />
+      <path d="M895 600 L905 560 L1045 560 L1055 600 Z" fill="#c94b3f" />
+      <path d="M895 600 L905 560 L1045 560 L1055 600 Z" fill="#00000000" />
+      <g fill="#e9d9c8">
+        <path d="M905 560 L915 560 L910 600 L900 600 Z" />
+        <path d="M945 560 L955 560 L950 600 L940 600 Z" />
+        <path d="M985 560 L995 560 L990 600 L980 600 Z" />
+        <path d="M1025 560 L1035 560 L1030 600 L1020 600 Z" />
+      </g>
+      <rect x="905" y="614" width="140" height="46" fill="#6b3a22" />
+      <ellipse cx="960" cy="612" rx="16" ry="8" fill="#2a2a2a" />
+      <path d="M974 612 q14 -4 14 -12" stroke="#2a2a2a" stroke-width="4" fill="none" />
+      <!-- vendor -->
+      <g>
+        <rect x="915" y="588" width="18" height="26" rx="6" fill="#3a5240" />
+        <circle cx="924" cy="580" r="10" fill="#8a5a3c" />
+      </g>
+    </g>
+
+    <!-- RAASTA FM hand-painted signboard (subtle) -->
+    <g transform="rotate(-3 1080 555)">
+      <rect x="1050" y="536" width="84" height="34" rx="3" fill="#7a3a2c" stroke="#3a1c14" stroke-width="2" />
+      <text
+        x="1092"
+        y="555"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="13"
+        font-weight="bold"
+        fill="#f0d9a8"
+      >
+        RAASTA
+      </text>
+      <text
+        x="1092"
+        y="567"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="11"
+        fill="#f0d9a8"
+      >
+        FM 91.2
+      </text>
+    </g>
+  </g>
+
+  <!-- Pedestrians -->
+  <g fill="#231a28">
+    <g>
+      <circle cx="850" cy="632" r="9" />
+      <path d="M841 641 q9 -6 18 0 l-3 30 h-12 z" />
+    </g>
+    <g opacity="0.92">
+      <rect x="792" y="642" width="30" height="16" rx="4" fill="#4a3020" />
+      <circle cx="806" cy="628" r="9" fill="#231a28" />
+      <path d="M797 636 q9 -5 18 0 l0 10 h-18 z" fill="#4a5a7a" />
+    </g>
+  </g>
+
+  <!-- Auto-rickshaw -->
+  <g transform="translate(560,606)">
+    <circle cx="20" cy="70" r="15" fill="#141014" />
+    <circle cx="95" cy="70" r="15" fill="#141014" />
+    <path d="M4 70 Q4 18 40 8 L92 8 Q112 8 112 36 L112 64 L4 64 Z" fill="#151515" />
+    <path d="M14 8 Q40 -10 70 8 L14 8 Z" fill="#d4a017" />
+    <rect x="30" y="16" width="52" height="26" rx="6" fill="#d4a017" />
+    <rect x="40" y="22" width="30" height="14" rx="3" fill="#9fc3d6" opacity="0.7" />
+  </g>
+
+  <!-- Bus (further back, muted) -->
+  <g transform="translate(1130,556)" opacity="0.95">
+    <rect x="0" y="20" width="230" height="70" rx="8" fill="#35618f" />
+    <rect x="0" y="20" width="230" height="16" fill="#e8dcc0" />
+    <g fill="#bfe0ee" opacity="0.85">
+      <rect x="14" y="42" width="26" height="20" rx="3" />
+      <rect x="50" y="42" width="26" height="20" rx="3" />
+      <rect x="86" y="42" width="26" height="20" rx="3" />
+      <rect x="122" y="42" width="26" height="20" rx="3" />
+      <rect x="158" y="42" width="26" height="20" rx="3" />
+      <rect x="194" y="42" width="26" height="20" rx="3" />
+    </g>
+    <circle cx="40" cy="94" r="14" fill="#100c14" />
+    <circle cx="190" cy="94" r="14" fill="#100c14" />
+  </g>
+
+  <!-- Road (foreground) -->
+  <polygon points="380,660 1220,660 1600,900 0,900" fill="url(#road)" />
+  <polygon points="380,660 1220,660 1600,900 0,900" fill="#000000" opacity="0.12" />
+  <g fill="#e0b34a" opacity="0.55">
+    <polygon points="770,700 800,700 792,750 762,750" />
+    <polygon points="748,795 786,795 774,860 730,860" />
+    <polygon points="704,900 748,900 726,900 676,900" />
+  </g>
+  <rect x="0" y="860" width="1600" height="40" fill="#050308" />
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#vignette)" />
+  <rect x="0" y="0" width="1600" height="900" filter="url(#grain)" />
+</svg>
