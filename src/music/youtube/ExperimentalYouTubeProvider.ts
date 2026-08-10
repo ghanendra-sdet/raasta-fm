@@ -238,6 +238,30 @@ export class ExperimentalYouTubeProvider implements MusicProvider {
     this.runOrDefer(() => this.player?.previousVideo())
   }
 
+  /**
+   * Jumps to a specific playlist index and plays it — the official
+   * `playVideoAt()` method, used by Driver Mode's session shuffle (see
+   * useExperimentalYouTubePlayer.ts) to navigate a shuffled order instead
+   * of the playlist's own next/previous sequence. Does not change what
+   * "the playlist" is — same official playlist, same IFrame API, just a
+   * different index selected by our own code.
+   */
+  async playAt(index: number): Promise<void> {
+    this.runOrDefer(() => this.player?.playVideoAt(index))
+  }
+
+  /**
+   * Cues (loads, does not play) a specific playlist index — reuses the
+   * exact `cuePlaylist()` call already used above for error auto-skip,
+   * just exposed for the shuffle's random session-start position. Never
+   * autoplays: matches the existing autoplay:0 policy for this provider.
+   */
+  cueAt(index: number): void {
+    this.runOrDefer(() =>
+      this.player?.cuePlaylist({ list: this.playlistId, listType: 'playlist', index }),
+    )
+  }
+
   getCurrentTrack(): Track | null {
     if (!this.isReady || !this.player) return null
     try {

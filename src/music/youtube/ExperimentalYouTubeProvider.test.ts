@@ -66,11 +66,24 @@ class FakePlayer {
   }
 
   cuePlaylistCalls: Array<{ list: string; listType: string; index: number }> = []
+  playVideoAtCalls: number[] = []
   currentTime = 0
   duration = 0
 
   cuePlaylist(args: { list: string; listType: string; index: number }) {
     this.cuePlaylistCalls.push(args)
+  }
+
+  playVideoAt(index: number) {
+    this.playVideoAtCalls.push(index)
+    this.playlistIndex = index
+    this.videoData = {
+      video_id: this.playlist[index],
+      title: `Track ${index + 1}`,
+      author: 'Channel One',
+    }
+    this.state = PLAYER_STATE.PLAYING
+    this.options.events?.onStateChange?.({ target: this, data: this.state })
   }
 
   getCurrentTime() {
@@ -305,6 +318,29 @@ describe('ExperimentalYouTubeProvider', () => {
 
       expect(() => provider.getProgress()).not.toThrow()
       expect(provider.getProgress()).toBeNull()
+    })
+  })
+
+  describe('playAt() / cueAt() — used by Driver Mode session shuffle', () => {
+    it('playAt() jumps to and plays the given playlist index', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+
+      await provider.playAt(2)
+
+      expect(fake.playVideoAtCalls).toEqual([2])
+      expect(provider.getCurrentTrack()?.id).toBe('youtube:vid3')
+      expect(provider.getPlaybackState()).toBe('playing')
+    })
+
+    it('cueAt() loads a playlist index without playing (never autoplays)', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+
+      provider.cueAt(2)
+
+      expect(fake.cuePlaylistCalls).toEqual([{ list: 'PLtest', listType: 'playlist', index: 2 }])
+      expect(fake.state).toBe(PLAYER_STATE.UNSTARTED)
     })
   })
 
