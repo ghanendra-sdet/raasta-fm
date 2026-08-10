@@ -61,6 +61,92 @@ experience** — none of which require a real commercial catalog.
 - Any external provider integration must follow that provider's _current_
   terms at the time of integration, not the terms as understood today.
 
+## Experimental YouTube Test Provider
+
+**Status: experimental, isolated, and expected to be replaced or removed.**
+This is not the music-source decision — see "If/when a real music source
+is considered later" above, which remains unresolved. This section exists
+solely to document a single, narrowly-scoped UX experiment run inside
+Driver Mode.
+
+**What it is.** `/driver-mode` optionally plays a single fixed **public
+YouTube playlist**, `PLTJ1PnzCWyFw`
+(https://music.youtube.com/playlist?list=PLTJ1PnzCWyFw), through the
+official YouTube IFrame Player API
+(https://developers.google.com/youtube/iframe_api_reference). The
+playlist is loaded by ID via the player's own `listType: 'playlist'` /
+`list` parameters (https://developers.google.com/youtube/player_parameters)
+— the officially supported way to load a playlist into the embedded
+player. No YouTube Data API, no API key, no server-side component.
+
+**Why.** To answer one question with real reviewers: _does Raasta FM feel
+significantly better when people can experience the concept with real
+Hindi music_, before any commercial licensing decision is made. See
+[ROADMAP.md](ROADMAP.md) — "Driver Mode — Real Music UX Experiment."
+
+**What it does NOT do** (all of the hard constraints above still apply in
+full — this is additive detail, not an exception to them):
+
+- Does not download, extract, scrape, mirror, proxy, or store any
+  YouTube audio or video, anywhere, ever.
+- Does not convert YouTube video to audio or separate audio from video.
+- Does not use YouTube Music Premium or any personal account credentials.
+- Does not hide, remove, or obscure YouTube's player, its native
+  controls, or its attribution/branding. The `<iframe>` the API creates
+  stays visibly present in the UI at all times — Raasta FM's own
+  Previous/Play/Next controls are rendered _beside_ it, driving playback
+  through the official `playVideo()` / `pauseVideo()` / `nextVideo()` /
+  `previousVideo()` methods, never overlaid on top of the player itself.
+- Does not circumvent YouTube advertising, restrictions, or any other
+  required behavior of the embedded player.
+- Does not reintroduce `seek()` into the core `MusicProvider` interface —
+  see [ARCHITECTURE.md](ARCHITECTURE.md). If the visible YouTube player
+  exposes its own native progress/seek UI as part of required minimum
+  functionality (https://developers.google.com/youtube/terms/required-minimum-functionality),
+  that is YouTube's own player behavior, not a Raasta FM feature, and does
+  not change the product's no-seek contract.
+
+**Isolation.** Implemented as `ExperimentalYouTubeProvider`
+(`src/music/youtube/`), a second, independent implementation of the exact
+same `MusicProvider` interface `MockMusicProvider` implements — proving
+the abstraction holds, per [ARCHITECTURE.md](ARCHITECTURE.md). It is
+**not** wired into the app-wide `PlayerContext`/`usePlayer()`; Driver Mode
+owns a fully separate local instance (`useExperimentalYouTubePlayer`,
+`src/features/driver-mode/`). Every other page — category browsing,
+`/now-playing`, Favorites, Playlists, Recently Played — continues to run
+on `MockMusicProvider`, completely unaffected. Removing the experiment
+means deleting `src/music/youtube/` and `src/features/driver-mode/` and
+reverting `src/pages/DriverMode.tsx` — no other file depends on it.
+
+**Known limitations**, documented rather than hidden:
+
+- `setQueue()` on this provider is a no-op — the "queue" is the YouTube
+  playlist itself, controlled by YouTube, not application code.
+- Only the currently-playing entry has real title/artist metadata (from
+  the API's `getVideoData()`); enumerating full metadata for every
+  playlist entry would require the separate YouTube Data API v3 with an
+  API key, which this experiment does not use.
+- `next()`/`previous()` follow YouTube's own playlist boundary behavior
+  (no forced wrap-around), unlike `MockMusicProvider`.
+- Favoriting acts on the shared app player state, not the YouTube-sourced
+  track — favoriting a YouTube video is out of scope for this experiment,
+  so the Favorites data model and persistence are unchanged.
+- **Observed during testing: many individual videos in the current test
+  playlist have embedding disabled by their rights holder**, even though
+  they play normally on youtube.com directly — common for commercial
+  Hindi film-music uploads (major label channels routinely block
+  third-party embedding while allowing direct viewing). `onError` codes
+  100/101/150 trigger an automatic skip to the next playlist index via
+  the official `cuePlaylist()` method (not a workaround — a normal API
+  call), bounded by a ~9s total budget; if nothing playable is found in
+  that window, Driver Mode shows a clear, honest error state instead of
+  spinning indefinitely. This is a content/rights characteristic of the
+  specific test playlist, not a defect in the provider or the embedding
+  approach — a differently-sourced playlist may behave better or worse.
+  If reviewer testing is blocked by this, the fix is picking a playlist
+  built from embedding-friendly sources, not changing this provider's
+  architecture.
+
 ## No ads
 
 Raasta FM's own experience is ad-free by design (see [PRODUCT.md](PRODUCT.md)).

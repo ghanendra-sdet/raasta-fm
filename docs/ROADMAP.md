@@ -74,6 +74,35 @@ for other reasons. Global presence before station-level presence; station-
 level presence (`90s Hindi 🟢 18 listening`) only after global presence is
 proven to add value.
 
+### Driver Mode — Real Music UX Experiment
+
+**Status:** Experimental.
+
+**Purpose:** Validate whether the Raasta FM experience is more compelling
+with real Hindi music, ahead of and independent from any commercial
+licensing decision. `/driver-mode` was transformed into a visually
+distinct, full-bleed experience that plays a single fixed public YouTube
+playlist through the official IFrame Player API — see
+[MUSIC-SOURCE.md — Experimental YouTube Test Provider](MUSIC-SOURCE.md#experimental-youtube-test-provider)
+for the complete policy and isolation details, and
+[ARCHITECTURE.md](ARCHITECTURE.md) for how `ExperimentalYouTubeProvider`
+sits alongside `MockMusicProvider` as a second, swappable implementation
+of the same `MusicProvider` interface without the rest of the app
+depending on it.
+
+**Success criteria** (same ~10-reviewer process as Phase 2):
+
+- Reviewers understand the concept quickly.
+- Reviewers enjoy the visual experience.
+- Reviewers find playback simple.
+- Reviewers understand the shared-radio concept.
+- Reviewers would use Driver Mode again.
+
+**This is explicitly not a music-source decision.** The playlist is a
+temporary test fixture, expected to be replaced or removed once the
+experiment has answered its one question. Phase 3 (music-source decision)
+remains unresolved and unaffected by this experiment's outcome either way.
+
 ## Out of scope until a phase explicitly calls for it
 
 Microservices, Kubernetes, complex backend infra, recommendation/AI
