@@ -2,6 +2,9 @@
 
 **Bas Chalao, Gaane Suno.** _(working tagline — may change)_
 
+**Live (10-reviewer prototype):** https://ghanendra-sdet.github.io/raasta-fm/
+— opens directly into Driver Mode, the current review experience.
+
 Raasta FM is an experimental, nostalgic Hindi music experience built for people
 who spend their day driving: auto, cab, bus, and truck drivers, and anyone who
 wants a simple road-trip listening experience instead of a modern streaming app.
