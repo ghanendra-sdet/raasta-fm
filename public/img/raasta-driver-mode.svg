@@ -279,7 +279,7 @@
   </g>
 
   <!-- the bus: environmental focal point, not a UI element -->
-  <g id="bus" transform="translate(800,560) scale(0.56)">
+  <g id="bus" transform="translate(800,596) scale(0.585)">
     <!-- sound waves near the bus -->
     <g id="music-effects" stroke="#ffd98a" fill="none" opacity="0.35">
       <circle cx="0" cy="-40" r="130">
@@ -426,7 +426,7 @@
           <rect x="-14" y="8" width="28" height="4" rx="1" />
           <rect x="-14" y="24" width="28" height="4" rx="1" />
           <rect x="-14" y="40" width="28" height="4" rx="1" />
-          <animateTransform attributeName="transform" type="translate" values="0 0;0 16" dur="0.9s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" values="0 0;0 16" dur="0.45s" repeatCount="indefinite" />
         </g>
       </g>
       <rect x="-3" y="-30" width="6" height="60" rx="3" fill="#3a2e2b" opacity="0.6" />
@@ -442,7 +442,7 @@
           <rect x="-14" y="8" width="28" height="4" rx="1" />
           <rect x="-14" y="24" width="28" height="4" rx="1" />
           <rect x="-14" y="40" width="28" height="4" rx="1" />
-          <animateTransform attributeName="transform" type="translate" values="0 0;0 16" dur="0.9s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" values="0 0;0 16" dur="0.45s" repeatCount="indefinite" />
         </g>
       </g>
       <rect x="-3" y="-30" width="6" height="60" rx="3" fill="#3a2e2b" opacity="0.6" />

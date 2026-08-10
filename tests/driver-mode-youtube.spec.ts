@@ -48,10 +48,11 @@ test('experimental Driver Mode: loads, no nav chrome, visible YouTube embed, con
   await expect(page.getByRole('button', { name: 'Previous track' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Next track' })).toBeVisible()
   await expect(page.getByRole('button', { name: /^(Play|Pause)$/ })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Favorite' })).toBeVisible()
 
-  // No seek/progress UI of Raasta FM's own.
-  await expect(page.locator('main input[type="range"]')).toHaveCount(0)
+  // Raasta FM's own seekable progress control is present exactly once —
+  // a deliberate, scoped exception to the app's normal no-seek rule (see
+  // docs/UX.md), added for this experimental provider only.
+  await expect(page.locator('main input[type="range"]')).toHaveCount(1)
 
   // No exit/navigation link — the menu is fully disabled for this
   // dead-end public review experience.

@@ -67,11 +67,17 @@ class FakePlayer {
 
   cuePlaylistCalls: Array<{ list: string; listType: string; index: number }> = []
   playVideoAtCalls: number[] = []
+  seekToCalls: Array<{ seconds: number; allowSeekAhead: boolean }> = []
   currentTime = 0
   duration = 0
 
   cuePlaylist(args: { list: string; listType: string; index: number }) {
     this.cuePlaylistCalls.push(args)
+  }
+
+  seekTo(seconds: number, allowSeekAhead: boolean) {
+    this.seekToCalls.push({ seconds, allowSeekAhead })
+    this.currentTime = seconds
   }
 
   playVideoAt(index: number) {
@@ -341,6 +347,28 @@ describe('ExperimentalYouTubeProvider', () => {
 
       expect(fake.cuePlaylistCalls).toEqual([{ list: 'PLtest', listType: 'playlist', index: 2 }])
       expect(fake.state).toBe(PLAYER_STATE.UNSTARTED)
+    })
+  })
+
+  describe('seekTo() — Driver Mode review-build seek bar, scoped exception to no-seek', () => {
+    it('jumps playback to the given position with allowSeekAhead', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+
+      provider.seekTo(120)
+
+      expect(fake.seekToCalls).toEqual([{ seconds: 120, allowSeekAhead: true }])
+    })
+
+    it('defers seekTo() called before the player is ready, running it once ready', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      provider.attach(document.createElement('div'))
+      provider.seekTo(45)
+
+      await new Promise((resolve) => setTimeout(resolve, 0))
+      lastPlayer?.triggerReady()
+
+      expect(lastPlayer?.seekToCalls).toEqual([{ seconds: 45, allowSeekAhead: true }])
     })
   })
 

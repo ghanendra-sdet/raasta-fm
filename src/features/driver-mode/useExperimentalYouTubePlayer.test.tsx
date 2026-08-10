@@ -91,6 +91,10 @@ class FakeProvider {
     this.notify()
   }
 
+  seekTo() {
+    // Not exercised by these shuffle-focused tests; present for interface parity.
+  }
+
   private notify() {
     this.listeners.forEach((l) => l())
   }

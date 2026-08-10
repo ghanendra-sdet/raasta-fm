@@ -166,6 +166,7 @@ export function useExperimentalYouTubePlayer(containerRef: RefObject<HTMLDivElem
         saveShuffleState(nextState)
         void provider.playAt(nextState.order[nextState.position])
       },
+      seek: (seconds: number) => provider.seekTo(seconds),
     }),
     [snapshot, error, progress, provider],
   )

@@ -51,16 +51,15 @@ function describeYouTubeError(code: number): string {
  * src/features/driver-mode/, and reverting DriverMode.tsx.
  *
  * Known limitations (see docs/MUSIC-SOURCE.md):
- * - No seek(): matches the permanent product rule. The visible YouTube
- *   player may show its own native progress UI (required by YouTube's
- *   embedding policy) — that is provider-native behavior, not a Raasta FM
- *   seek control, and does not change the MusicProvider contract.
- * - getProgress() is a narrow, read-only exception to "provider untouched":
- *   it exposes the player's own getCurrentTime()/getDuration() for a
- *   display-only progress indicator in Driver Mode. No seek()/
- *   setCurrentTime() exists anywhere in this class or MusicProvider —
- *   reading playback position is not the same capability as controlling
- *   it, and the no-seek product contract is unchanged.
+ * - seekTo() is a narrow, deliberate exception to the permanent product's
+ *   no-seek rule (see docs/UX.md), added for Driver Mode's review-build
+ *   progress bar per direct reviewer feedback. It exists only on this
+ *   class — MusicProvider has no seek() method, MockMusicProvider has no
+ *   equivalent, and every other page in the app remains no-seek. Removing
+ *   the experiment (see Isolation above) removes this exception with it.
+ * - getProgress() exposes the player's own getCurrentTime()/getDuration()
+ *   for both the display-only progress indicator and, now, the seek bar's
+ *   current position.
  * - setQueue() is a no-op: the "queue" here is the YouTube playlist
  *   itself, controlled by YouTube, not by application code.
  * - getQueue() enumerates real playlist video IDs via the API, but only
@@ -194,9 +193,24 @@ export class ExperimentalYouTubeProvider implements MusicProvider {
   }
 
   /**
+   * Jumps playback to a specific position — the official `seekTo()` method.
+   * Scoped deliberately narrow: this exists only on
+   * ExperimentalYouTubeProvider for Driver Mode's review-build progress bar
+   * (reviewer feedback asked for click/drag-to-seek). It is NOT part of the
+   * MusicProvider interface and MockMusicProvider has no equivalent — the
+   * rest of the app's no-seek contract (see docs/UX.md) is untouched by
+   * this. `allowSeekAhead: true` so seeking into a not-yet-buffered part of
+   * the video still works.
+   */
+  seekTo(seconds: number): void {
+    this.runOrDefer(() => this.player?.seekTo(seconds, true))
+  }
+
+  /**
    * Read-only. Returns null until the player is ready or if the duration
-   * isn't known yet (e.g. still buffering). Never used to control playback
-   * — see class-level doc comment on the no-seek rationale.
+   * isn't known yet (e.g. still buffering). Paired with seekTo() above for
+   * Driver Mode's progress bar specifically — see that method's doc
+   * comment for the scope of the no-seek exception this represents.
    */
   getProgress(): { currentSeconds: number; durationSeconds: number } | null {
     if (!this.isReady || !this.player) return null

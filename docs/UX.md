@@ -43,6 +43,19 @@ Shuffle, repeat, and queue view are possible later additions, kept out of
 v1 to keep the first impression simple. See [PRODUCT.md](PRODUCT.md) for
 the product principle this UX choice is built on.
 
+**Scoped exception — Driver Mode's review build.** Driver Mode's
+experimental YouTube-backed player (`ExperimentalYouTubeProvider`, see
+docs/MUSIC-SOURCE.md) exposes a real, draggable seek control on its
+progress bar, added after direct reviewer feedback: several videos in the
+review playlist open with a spoken/dialogue intro before the song starts,
+and reviewers wanted a way to skip past it. This is a deliberate,
+narrowly-scoped departure from the principle above — it exists only on
+`ExperimentalYouTubeProvider.seekTo()`, is not part of the `MusicProvider`
+interface, and `MockMusicProvider` (the permanent product's provider) has
+no equivalent. Every other page in the app remains no-seek. Whether the
+permanent product should eventually allow seeking is an open question for
+after this review round, not something this change has settled.
+
 ## Driver Mode (future)
 
 An even more stripped-down player view, entered deliberately before a

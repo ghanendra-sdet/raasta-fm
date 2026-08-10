@@ -16,6 +16,7 @@ const hookState = {
   togglePlayPause: vi.fn(),
   next: vi.fn(),
   previous: vi.fn(),
+  seek: vi.fn(),
 }
 
 vi.mock('../features/driver-mode/useExperimentalYouTubePlayer', () => ({
@@ -89,16 +90,21 @@ describe('DriverMode (experimental)', () => {
     expect(hookState.previous).toHaveBeenCalledTimes(1)
   })
 
-  it('renders the progress display as display-only, not an interactive seek control', () => {
+  it('renders a seekable progress control wired to the experimental hook', async () => {
+    const user = userEvent.setup()
     hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
     hookState.progress = { currentSeconds: 11, durationSeconds: 304 }
     renderDriverMode()
 
     expect(screen.getByText('0:11')).toBeInTheDocument()
     expect(screen.getByText('5:04')).toBeInTheDocument()
-    expect(screen.queryByRole('slider')).not.toBeInTheDocument()
-    expect(document.querySelector('input[type="range"]')).toBeNull()
-    expect(document.querySelector('[onclick]')).toBeNull()
+
+    const seekControl = screen.getByRole('slider', { name: 'Seek' })
+    expect(seekControl).toBeEnabled()
+
+    await user.click(seekControl)
+    await user.keyboard('{ArrowRight}')
+    expect(hookState.seek).toHaveBeenCalled()
   })
 
   it('shows 0:00 gracefully when progress is not yet available', () => {
@@ -116,9 +122,9 @@ describe('DriverMode (experimental)', () => {
     expect(document.querySelectorAll('.backdrop-blur-md')).toHaveLength(1)
   })
 
-  it('renders the Favorite control', () => {
+  it('does not render a Favorite control (removed for space in this review build)', () => {
     renderDriverMode()
-    expect(screen.getByRole('button', { name: 'Favorite' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Favorite' })).not.toBeInTheDocument()
   })
 
   it('has no exit/navigation links back to the rest of the app', () => {
