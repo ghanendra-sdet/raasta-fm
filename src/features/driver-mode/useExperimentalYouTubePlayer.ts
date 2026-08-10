@@ -14,6 +14,13 @@ import type { PlaybackState, Track } from '../../music/types'
  */
 export const EXPERIMENTAL_PLAYLIST_ID = 'PLHuHXHyLu7BH71H9_USibJABiVmLNClQy'
 
+const PROGRESS_POLL_MS = 500
+
+export interface PlaybackProgress {
+  currentSeconds: number
+  durationSeconds: number
+}
+
 interface Snapshot {
   currentTrack: Track | null
   playbackState: PlaybackState
@@ -29,11 +36,15 @@ interface Snapshot {
  * The container ref is a caller-owned parameter rather than something this
  * hook returns bundled with reactive state — keeping refs and render data
  * in separate values, not one merged object.
+ *
+ * Progress is polled (the IFrame API has no time-update event) and is
+ * strictly informational — see ExperimentalYouTubeProvider.getProgress().
  */
 export function useExperimentalYouTubePlayer(containerRef: RefObject<HTMLDivElement | null>) {
   const [provider] = useState(() => new ExperimentalYouTubeProvider(EXPERIMENTAL_PLAYLIST_ID))
   const snapshotRef = useRef<Snapshot>({ currentTrack: null, playbackState: 'idle' })
   const [error, setError] = useState<string | null>(null)
+  const [progress, setProgress] = useState<PlaybackProgress | null>(null)
 
   useEffect(() => {
     if (containerRef.current) {
@@ -41,6 +52,13 @@ export function useExperimentalYouTubePlayer(containerRef: RefObject<HTMLDivElem
     }
     return () => provider.destroy()
   }, [provider, containerRef])
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setProgress(provider.getProgress())
+    }, PROGRESS_POLL_MS)
+    return () => window.clearInterval(id)
+  }, [provider])
 
   const subscribe = useCallback(
     (onStoreChange: () => void) =>
@@ -63,6 +81,7 @@ export function useExperimentalYouTubePlayer(containerRef: RefObject<HTMLDivElem
       currentTrack: snapshot.currentTrack,
       playbackState: snapshot.playbackState,
       error,
+      progress,
       play: () => {
         void provider.play()
       },
@@ -81,6 +100,6 @@ export function useExperimentalYouTubePlayer(containerRef: RefObject<HTMLDivElem
         void provider.previous()
       },
     }),
-    [snapshot, error, provider],
+    [snapshot, error, progress, provider],
   )
 }

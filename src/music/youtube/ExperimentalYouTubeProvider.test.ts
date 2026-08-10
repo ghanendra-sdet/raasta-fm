@@ -66,9 +66,19 @@ class FakePlayer {
   }
 
   cuePlaylistCalls: Array<{ list: string; listType: string; index: number }> = []
+  currentTime = 0
+  duration = 0
 
   cuePlaylist(args: { list: string; listType: string; index: number }) {
     this.cuePlaylistCalls.push(args)
+  }
+
+  getCurrentTime() {
+    return this.currentTime
+  }
+
+  getDuration() {
+    return this.duration
   }
 
   getPlayerState() {
@@ -247,5 +257,73 @@ describe('ExperimentalYouTubeProvider', () => {
 
     expect(fake.destroyed).toBe(true)
     expect(provider.getPlaybackState()).toBe('idle')
+  })
+
+  describe('getProgress()', () => {
+    it('is null before the player is ready', () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      expect(provider.getProgress()).toBeNull()
+    })
+
+    it('reads current time and duration from the player once ready', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+      fake.currentTime = 11
+      fake.duration = 304
+
+      expect(provider.getProgress()).toEqual({ currentSeconds: 11, durationSeconds: 304 })
+    })
+
+    it('updates as playback position changes', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+      fake.duration = 200
+
+      fake.currentTime = 5
+      expect(provider.getProgress()?.currentSeconds).toBe(5)
+
+      fake.currentTime = 42
+      expect(provider.getProgress()?.currentSeconds).toBe(42)
+    })
+
+    it('handles a zero/unknown duration gracefully instead of crashing', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+      fake.currentTime = 0
+      fake.duration = 0
+
+      expect(() => provider.getProgress()).not.toThrow()
+      expect(provider.getProgress()).toEqual({ currentSeconds: 0, durationSeconds: 0 })
+    })
+
+    it('returns null if the underlying player throws (e.g. not actually loaded yet)', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+      fake.getCurrentTime = () => {
+        throw new Error('not available')
+      }
+
+      expect(() => provider.getProgress()).not.toThrow()
+      expect(provider.getProgress()).toBeNull()
+    })
+  })
+
+  describe('regression: existing playback methods are unaffected by getProgress()', () => {
+    it('play/pause/next/previous still behave exactly as before', async () => {
+      const provider = new ExperimentalYouTubeProvider('PLtest')
+      const fake = await attachAndReady(provider)
+
+      await provider.play()
+      expect(provider.getPlaybackState()).toBe('playing')
+
+      provider.pause()
+      expect(provider.getPlaybackState()).toBe('paused')
+
+      await provider.next()
+      expect(fake.playlistIndex).toBe(1)
+
+      await provider.previous()
+      expect(fake.playlistIndex).toBe(0)
+    })
   })
 })

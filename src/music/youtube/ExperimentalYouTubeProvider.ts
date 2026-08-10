@@ -55,6 +55,12 @@ function describeYouTubeError(code: number): string {
  *   player may show its own native progress UI (required by YouTube's
  *   embedding policy) — that is provider-native behavior, not a Raasta FM
  *   seek control, and does not change the MusicProvider contract.
+ * - getProgress() is a narrow, read-only exception to "provider untouched":
+ *   it exposes the player's own getCurrentTime()/getDuration() for a
+ *   display-only progress indicator in Driver Mode. No seek()/
+ *   setCurrentTime() exists anywhere in this class or MusicProvider —
+ *   reading playback position is not the same capability as controlling
+ *   it, and the no-seek product contract is unchanged.
  * - setQueue() is a no-op: the "queue" here is the YouTube playlist
  *   itself, controlled by YouTube, not by application code.
  * - getQueue() enumerates real playlist video IDs via the API, but only
@@ -185,6 +191,23 @@ export class ExperimentalYouTubeProvider implements MusicProvider {
 
   getLastError(): string | null {
     return this.lastError
+  }
+
+  /**
+   * Read-only. Returns null until the player is ready or if the duration
+   * isn't known yet (e.g. still buffering). Never used to control playback
+   * — see class-level doc comment on the no-seek rationale.
+   */
+  getProgress(): { currentSeconds: number; durationSeconds: number } | null {
+    if (!this.isReady || !this.player) return null
+    try {
+      const currentSeconds = this.player.getCurrentTime()
+      const durationSeconds = this.player.getDuration()
+      if (!Number.isFinite(currentSeconds) || !Number.isFinite(durationSeconds)) return null
+      return { currentSeconds, durationSeconds }
+    } catch {
+      return null
+    }
   }
 
   subscribe(listener: PlayerListener): () => void {

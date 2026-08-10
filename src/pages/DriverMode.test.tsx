@@ -10,6 +10,7 @@ const hookState = {
   currentTrack: null as { id: string; title: string; artist: string } | null,
   playbackState: 'idle' as 'idle' | 'playing' | 'paused',
   error: null as string | null,
+  progress: null as { currentSeconds: number; durationSeconds: number } | null,
   play: vi.fn(),
   pause: vi.fn(),
   togglePlayPause: vi.fn(),
@@ -38,6 +39,7 @@ describe('DriverMode (experimental)', () => {
     hookState.currentTrack = null
     hookState.playbackState = 'idle'
     hookState.error = null
+    hookState.progress = null
     vi.clearAllMocks()
   })
 
@@ -87,11 +89,23 @@ describe('DriverMode (experimental)', () => {
     expect(hookState.previous).toHaveBeenCalledTimes(1)
   })
 
-  it('renders no seek/progress controls of its own', () => {
+  it('renders the progress display as display-only, not an interactive seek control', () => {
     hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
+    hookState.progress = { currentSeconds: 11, durationSeconds: 304 }
     renderDriverMode()
+
+    expect(screen.getByText('0:11 / 5:04')).toBeInTheDocument()
     expect(screen.queryByRole('slider')).not.toBeInTheDocument()
     expect(document.querySelector('input[type="range"]')).toBeNull()
+    expect(document.querySelector('[onclick]')).toBeNull()
+  })
+
+  it('shows 0:00 / 0:00 gracefully when progress is not yet available', () => {
+    hookState.currentTrack = { id: 'youtube:vid1', title: 'Track One', artist: 'Channel One' }
+    hookState.progress = null
+    renderDriverMode()
+
+    expect(screen.getByText('0:00 / 0:00')).toBeInTheDocument()
   })
 
   it('renders the Favorite control and an exit link', () => {
