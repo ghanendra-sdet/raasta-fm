@@ -109,7 +109,7 @@ export default function DriverMode() {
         </span>
 
         <div className="absolute inset-x-0 top-4 flex flex-col items-center gap-1.5">
-          <p className="text-2xl font-bold tracking-[0.3em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:text-3xl">
+          <p className="text-xs font-semibold tracking-[0.4em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] sm:text-3xl sm:font-bold sm:tracking-[0.3em]">
             Raasta FM
           </p>
           <span
@@ -132,7 +132,7 @@ export default function DriverMode() {
           low, over the road/foreground, with enough bottom margin to never
           touch the viewport edge.
         */}
-        <div className="mt-2 flex w-full max-w-2xl flex-col gap-4 rounded-3xl border border-white/15 bg-white/10 px-5 py-4 shadow-[0_8px_36px_rgba(0,0,0,0.45)] backdrop-blur-md sm:flex-row sm:items-center sm:gap-5 sm:px-6 sm:py-5">
+        <div className="mt-2 flex w-full max-w-2xl flex-col gap-3 rounded-3xl border border-white/15 bg-white/10 px-4 py-3 shadow-[0_8px_36px_rgba(0,0,0,0.45)] backdrop-blur-md sm:flex-row sm:items-center sm:gap-5 sm:px-6 sm:py-5">
           <SimpleRadioPlayer
             currentTrack={player.currentTrack}
             playbackState={player.playbackState}

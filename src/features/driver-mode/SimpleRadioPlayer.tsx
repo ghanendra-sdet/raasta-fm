@@ -83,7 +83,7 @@ export function SimpleRadioPlayer({
   return (
     <div className="flex min-w-0 flex-1 items-center gap-3 text-left sm:gap-4">
       <div
-        className="relative h-16 w-16 shrink-0 animate-[spin_6s_linear_infinite] overflow-hidden rounded-full border-2 border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.5)] motion-reduce:animate-none sm:h-20 sm:w-20"
+        className="relative h-14 w-14 shrink-0 animate-[spin_6s_linear_infinite] overflow-hidden rounded-full border-2 border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.5)] motion-reduce:animate-none sm:h-20 sm:w-20"
         style={{
           backgroundImage: `radial-gradient(circle at 35% 30%, hsl(${hue} 65% 24%) 0%, hsl(${hue} 55% 12%) 55%, #0a0a0a 100%)`,
           animationPlayState: isPlaying ? 'running' : 'paused',
@@ -108,10 +108,10 @@ export function SimpleRadioPlayer({
           <p className="text-sm text-neutral-100/90">Tuning in&hellip;</p>
         ) : (
           <>
-            <p className="truncate text-base font-semibold text-neutral-50 sm:text-lg">
+            <p className="truncate text-sm font-semibold text-neutral-50 sm:text-lg">
               {currentTrack?.title}
             </p>
-            <p className="truncate text-sm text-neutral-200/85 sm:text-base">
+            <p className="truncate text-xs text-neutral-200/85 sm:text-base">
               {currentTrack?.artist}
             </p>
           </>
@@ -150,7 +150,7 @@ export function SimpleRadioPlayer({
                 className="relative h-4 w-full cursor-pointer appearance-none bg-transparent disabled:cursor-default [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-amber-300 [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-amber-300"
               />
             </div>
-            <div className="flex justify-between font-mono text-xs tabular-nums text-white/70">
+            <div className="flex justify-between font-mono text-[10px] tabular-nums text-white/70 sm:text-xs">
               <span>{formatTime(displaySeconds)}</span>
               <span>{formatTime(duration)}</span>
             </div>
