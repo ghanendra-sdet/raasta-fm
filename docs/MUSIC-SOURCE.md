@@ -70,9 +70,9 @@ solely to document a single, narrowly-scoped UX experiment run inside
 Driver Mode.
 
 **What it is.** `/driver-mode` optionally plays a single fixed **public
-YouTube playlist**, `PLHuHXHyLu7BH71H9_USibJABiVmLNClQy` — Sony Music
-India, "Most Popular Songs" (51 tracks)
-(https://www.youtube.com/playlist?list=PLHuHXHyLu7BH71H9_USibJABiVmLNClQy),
+YouTube playlist**, `RDCLAK5uy_lnm4v4arFrmL63NUzIdoXJe-E7G4_sriU` — a
+YouTube-generated Hindi "mix" radio playlist (80 tracks)
+(https://music.youtube.com/playlist?list=RDCLAK5uy_lnm4v4arFrmL63NUzIdoXJe-E7G4_sriU),
 through the official YouTube IFrame Player API
 (https://developers.google.com/youtube/iframe_api_reference). The
 playlist is loaded by ID via the player's own `listType: 'playlist'` /
@@ -136,14 +136,19 @@ reverting `src/pages/DriverMode.tsx` — no other file depends on it.
   replaced after testing found many of its individual videos had
   embedding disabled by their rights holders — common for commercial
   Hindi film-music uploads (major label channels routinely block
-  third-party embedding while allowing direct viewing on youtube.com).
-  The current playlist (Sony Music India, above) was verified fully
-  embeddable across sampled tracks before adoption. This is a
-  content/rights characteristic of whichever playlist is configured, not
-  a defect in the provider or the embedding approach — the provider still
-  handles a blocked video gracefully regardless: `onError` codes
-  100/101/150 trigger an automatic skip to the next playlist index via
-  the official `cuePlaylist()` method (not a workaround — a normal API
+  third-party embedding while allowing direct viewing on youtube.com). It
+  was then replaced by a Sony Music India playlist
+  (`PLHuHXHyLu7BH71H9_USibJABiVmLNClQy`), and later by the current
+  YouTube-generated "mix" playlist (above) at the requester's preference.
+  Each replacement was verified fully embeddable and loadable via the
+  official IFrame API — including, for the current playlist, confirming
+  it initializes, resolves real track metadata, and plays/skips correctly
+  with **no authentication and no signed-in session** — before adoption.
+  This is a content/rights characteristic of whichever playlist is
+  configured, not a defect in the provider or the embedding approach — the
+  provider still handles a blocked video gracefully regardless: `onError`
+  codes 100/101/150 trigger an automatic skip to the next playlist index
+  via the official `cuePlaylist()` method (not a workaround — a normal API
   call), bounded by a ~9s total budget; if nothing playable is found in
   that window, Driver Mode shows a clear, honest error state instead of
   spinning indefinitely.

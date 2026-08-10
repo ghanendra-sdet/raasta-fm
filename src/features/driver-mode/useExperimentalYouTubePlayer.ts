@@ -7,12 +7,13 @@ import type { PlaybackState, Track } from '../../music/types'
  * A fixed public YouTube playlist used only to test the Driver Mode
  * concept with real Hindi music. See docs/MUSIC-SOURCE.md.
  *
- * Sony Music India — "Most Popular Songs" (51 tracks). Verified fully
- * embeddable via the official IFrame API before adoption; replaced the
- * original PLTJ1PnzCWyFw after testing found many of its videos had
- * embedding disabled by their rights holders. See docs/MUSIC-SOURCE.md.
+ * A YouTube-generated Hindi "mix" radio playlist (RD... ID, 80 tracks).
+ * Verified fully embeddable via the official IFrame API before adoption —
+ * loads, resolves real track metadata, and plays/skips signed-out, with no
+ * authentication required. Replaced the prior Sony Music India playlist
+ * (PLHuHXHyLu7BH71H9_USibJABiVmLNClQy). See docs/MUSIC-SOURCE.md.
  */
-export const EXPERIMENTAL_PLAYLIST_ID = 'PLHuHXHyLu7BH71H9_USibJABiVmLNClQy'
+export const EXPERIMENTAL_PLAYLIST_ID = 'RDCLAK5uy_lnm4v4arFrmL63NUzIdoXJe-E7G4_sriU'
 
 const PROGRESS_POLL_MS = 500
 

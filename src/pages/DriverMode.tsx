@@ -42,10 +42,14 @@ function useClock() {
  * YouTube video is out of scope for this experiment so Favorites'
  * catalog-ID-based data model and persistence stay untouched.
  *
- * The required, visible YouTube <iframe> renders small and separately in
- * the header — never hidden, zero-sized, opacity-0, moved off-screen,
- * clipped, or covered (required minimum functionality). See
- * docs/MUSIC-SOURCE.md.
+ * The required, visible YouTube <iframe> is deliberately NOT placed next
+ * to the "online" indicator or any other Raasta FM UI element — it sits
+ * alone in the bottom-left corner, small and unstyled, so it reads as a
+ * required technical/legal element rather than a second "video player"
+ * paired with our own UI. It can never be hidden, zero-sized, opacity-0,
+ * moved off-screen, clipped, or covered (YouTube's required minimum
+ * functionality) — see docs/MUSIC-SOURCE.md for the full compliance
+ * rationale and the limits this places on how small/discreet it can be.
  */
 export default function DriverMode() {
   const time = useClock()
@@ -65,41 +69,26 @@ export default function DriverMode() {
     <main className="relative flex min-h-screen flex-col overflow-hidden bg-neutral-950 text-neutral-100">
       <RoadsideBackground />
 
-      <div className="relative flex items-start justify-between px-4 pt-4 text-xs text-neutral-200/80">
+      <div className="relative px-4 pt-4 text-xs text-neutral-200/80">
         <span suppressHydrationWarning>
           {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
-        <div className="flex items-center gap-2">
-          <span
-            className="flex items-center gap-1.5"
-            title="Demo value — live presence not yet implemented"
-          >
-            <span aria-hidden="true" className="text-emerald-400">
-              ●
-            </span>
-            {DEMO_ONLINE_COUNT} online
-          </span>
-          {/*
-            Required visible YouTube player. Kept at the smallest size and
-            plainest presentation we judge to still be a genuinely visible,
-            operable player surface (real, non-zero pixels; native controls
-            and attribution rendered; not clipped) — no card framing/
-            background so it reads as a small inline utility element next to
-            the online count rather than a separate floating box. Never
-            hidden, zero-sized, opacity-0, moved off-screen, clipped, or
-            covered by our own UI. See docs/MUSIC-SOURCE.md "Experimental
-            YouTube Test Provider".
-          */}
-          <div className="aspect-video w-8 shrink-0 overflow-hidden">
-            <div ref={containerRef} className="h-full w-full" />
-          </div>
-        </div>
       </div>
 
       <div className="relative flex flex-1 flex-col items-center justify-center gap-4 px-4 py-6">
         <p className="text-sm font-semibold tracking-[0.4em] text-neutral-100 uppercase drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
           Raasta FM
         </p>
+
+        <span
+          className="flex items-center gap-1.5 text-xs text-neutral-200/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
+          title="Demo value — live presence not yet implemented"
+        >
+          <span aria-hidden="true" className="text-emerald-400">
+            ●
+          </span>
+          {DEMO_ONLINE_COUNT} online
+        </span>
 
         <SimpleRadioPlayer
           currentTrack={player.currentTrack}
@@ -118,6 +107,22 @@ export default function DriverMode() {
         />
 
         <FavoriteButton />
+      </div>
+
+      {/*
+        Required visible YouTube player. Isolated in its own corner, away
+        from "online" and every other Raasta FM element, at the smallest
+        size and plainest presentation we judge to still be a genuinely
+        visible, operable player surface (real, non-zero pixels; native
+        controls and attribution rendered; not clipped) — no card framing/
+        background. Never hidden, zero-sized, opacity-0, moved off-screen,
+        clipped, or covered by our own UI. See docs/MUSIC-SOURCE.md
+        "Experimental YouTube Test Provider".
+      */}
+      <div className="relative flex justify-start px-4 pb-3">
+        <div className="aspect-video w-8 shrink-0 overflow-hidden">
+          <div ref={containerRef} className="h-full w-full" />
+        </div>
       </div>
     </main>
   )
