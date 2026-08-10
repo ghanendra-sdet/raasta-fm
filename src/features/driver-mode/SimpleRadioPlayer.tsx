@@ -1,4 +1,4 @@
-import type { Track } from '../../music/types'
+import type { PlaybackState, Track } from '../../music/types'
 import type { PlaybackProgress } from './useExperimentalYouTubePlayer'
 
 function hashToHue(id: string): number {
@@ -31,6 +31,7 @@ function getYouTubeThumbnailUrl(trackId: string): string | null {
 
 interface SimpleRadioPlayerProps {
   currentTrack: Track | null
+  playbackState: PlaybackState
   progress: PlaybackProgress | null
   error: string | null
   thumbnailFailed: boolean
@@ -47,12 +48,14 @@ interface SimpleRadioPlayerProps {
  */
 export function SimpleRadioPlayer({
   currentTrack,
+  playbackState,
   progress,
   error,
   thumbnailFailed,
   onThumbnailError,
 }: SimpleRadioPlayerProps) {
   const isLoading = !currentTrack && !error
+  const isPlaying = playbackState === 'playing'
   const thumbnailUrl =
     currentTrack && !thumbnailFailed ? getYouTubeThumbnailUrl(currentTrack.id) : null
   const hue = currentTrack ? hashToHue(currentTrack.id) : 30
@@ -63,9 +66,10 @@ export function SimpleRadioPlayer({
   return (
     <div className="flex min-w-0 flex-1 items-center gap-3 text-left sm:gap-4">
       <div
-        className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.5)] sm:h-16 sm:w-16"
+        className="relative h-14 w-14 shrink-0 animate-[spin_6s_linear_infinite] overflow-hidden rounded-full border-2 border-white/25 shadow-[0_4px_16px_rgba(0,0,0,0.5)] motion-reduce:animate-none sm:h-16 sm:w-16"
         style={{
           backgroundImage: `radial-gradient(circle at 35% 30%, hsl(${hue} 65% 24%) 0%, hsl(${hue} 55% 12%) 55%, #0a0a0a 100%)`,
+          animationPlayState: isPlaying ? 'running' : 'paused',
         }}
         role="img"
         aria-label={currentTrack ? `Artwork for ${currentTrack.title}` : 'No station tuned'}

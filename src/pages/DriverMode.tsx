@@ -4,14 +4,39 @@ import { RoadsideBackground } from '../features/driver-mode/RoadsideBackground'
 import { SimpleRadioPlayer } from '../features/driver-mode/SimpleRadioPlayer'
 import { ExperimentalPlayerControls } from '../features/driver-mode/ExperimentalPlayerControls'
 import { useExperimentalYouTubePlayer } from '../features/driver-mode/useExperimentalYouTubePlayer'
+import { useMediaSession } from '../features/driver-mode/useMediaSession'
 
 /**
- * Placeholder only — no realtime presence service exists. See
- * docs/ROADMAP.md "Future Feature — Live Presence" (still deferred) and
- * docs/ARCHITECTURE.md "Future — Realtime Presence". This is a fixed demo
- * value for the visual composition, not a measurement of anything real.
+ * Experiment audience estimate — NOT real presence. There is no realtime
+ * backend/presence service in this project (see docs/ROADMAP.md "Future
+ * Feature — Live Presence", still deferred, and docs/ARCHITECTURE.md
+ * "Future — Realtime Presence"). This is a frontend-only, per-session
+ * placeholder for the current 10-user review experiment: a small
+ * deterministic-random base (18-30) is generated once per browser session
+ * and multiplied by 10 (the experiment's reviewer count), then held stable
+ * for the rest of the session — it never claims to count real concurrent
+ * visitors, and must never be wired to any actual presence signal without
+ * updating this comment and the UI copy together.
  */
-const DEMO_ONLINE_COUNT = 24
+const ONLINE_COUNT_MULTIPLIER = 10
+const ONLINE_COUNT_SESSION_KEY = 'raasta-fm:driver-mode:online-estimate-base'
+
+function getSessionOnlineEstimate(): number {
+  if (typeof window === 'undefined') return 24 * ONLINE_COUNT_MULTIPLIER
+  try {
+    const stored = window.sessionStorage.getItem(ONLINE_COUNT_SESSION_KEY)
+    if (stored) {
+      const parsed = Number(stored)
+      if (Number.isFinite(parsed)) return parsed
+    }
+    const base = 18 + Math.floor(Math.random() * 13) // 18-30
+    const estimate = base * ONLINE_COUNT_MULTIPLIER
+    window.sessionStorage.setItem(ONLINE_COUNT_SESSION_KEY, String(estimate))
+    return estimate
+  } catch {
+    return 24 * ONLINE_COUNT_MULTIPLIER
+  }
+}
 
 function useClock() {
   const [time, setTime] = useState(() => new Date())
@@ -58,6 +83,7 @@ export default function DriverMode() {
   const player = useExperimentalYouTubePlayer(containerRef)
   const [thumbnailFailed, setThumbnailFailed] = useState(false)
   const previousTrackIdRef = useRef<string | null>(null)
+  const [onlineEstimate] = useState(getSessionOnlineEstimate)
 
   if (player.currentTrack?.id !== previousTrackIdRef.current) {
     previousTrackIdRef.current = player.currentTrack?.id ?? null
@@ -66,13 +92,22 @@ export default function DriverMode() {
 
   const hasTrack = Boolean(player.currentTrack)
 
+  useMediaSession({
+    currentTrack: player.currentTrack,
+    playbackState: player.playbackState,
+    onPlay: player.play,
+    onPause: player.pause,
+    onPrevious: player.previous,
+    onNext: player.next,
+  })
+
   return (
     <main className="relative flex min-h-screen flex-col overflow-hidden bg-neutral-950 text-neutral-100">
       <RoadsideBackground />
 
       <div className="relative flex items-start justify-between px-4 pt-4 text-xs text-neutral-200/80">
         <span suppressHydrationWarning>
-          {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })}
         </span>
 
         <div className="absolute inset-x-0 top-4 flex flex-col items-center gap-1.5">
@@ -81,25 +116,28 @@ export default function DriverMode() {
           </p>
           <span
             className="flex items-center gap-1.5 text-xs text-neutral-200/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]"
-            title="Demo value — live presence not yet implemented"
+            title="Estimated audience for this review experiment — not a measurement of real concurrent visitors"
           >
             <span aria-hidden="true" className="text-emerald-400">
               ●
             </span>
-            {DEMO_ONLINE_COUNT} online
+            {onlineEstimate} online
           </span>
         </div>
       </div>
 
-      <div className="relative flex flex-1 flex-col items-center justify-end gap-3 px-4 pb-8">
+      <div className="relative flex flex-1 flex-col items-center justify-end gap-3 px-4 pb-4 sm:pb-6">
         {/*
           One floating glass pill: artwork/title/artist/progress on the
           left, playback controls on the right — a single piece of glass
-          sitting inside the scene, not a dashboard or stacked panels.
+          sitting inside the scene, not a dashboard or stacked panels. Sits
+          low, over the road/foreground, with enough bottom margin to never
+          touch the viewport edge.
         */}
         <div className="mt-2 flex w-full max-w-xl flex-col gap-3 rounded-3xl border border-white/15 bg-white/10 px-4 py-3 shadow-[0_8px_36px_rgba(0,0,0,0.45)] backdrop-blur-md sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4">
           <SimpleRadioPlayer
             currentTrack={player.currentTrack}
+            playbackState={player.playbackState}
             progress={player.progress}
             error={player.error}
             thumbnailFailed={thumbnailFailed}

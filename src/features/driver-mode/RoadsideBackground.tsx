@@ -12,9 +12,15 @@
  * clearly over it.
  *
  * Rendered as a CSS background (cover + bottom-anchored) rather than an
- * inline <img>/<svg> so it crops predictably on narrow viewports: the
- * lower band (road, the player-safe area) stays visible instead of being
- * pushed off-screen the way a top-anchored crop would.
+ * inline <img>/<svg> so it crops predictably at any viewport. On every
+ * phone width this composition targets, `background-size: cover`'s scale
+ * factor is height-driven (the container's height/width ratio exceeds the
+ * illustration's), which makes the full illustration height always fit
+ * exactly — background-position-y has no visible effect at these
+ * viewports, only width gets cropped. The bus's own placement inside the
+ * SVG (public/img/raasta-driver-mode.svg, #bus) is sized/positioned to
+ * leave clearance above the player pill at both mobile and desktop
+ * viewports instead.
  */
 export function RoadsideBackground() {
   return (

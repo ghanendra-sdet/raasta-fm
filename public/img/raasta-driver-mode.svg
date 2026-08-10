@@ -242,7 +242,7 @@
   </g>
 
   <!-- the bus: environmental focal point, not a UI element -->
-  <g id="bus" transform="translate(800,660) scale(0.62)">
+  <g id="bus" transform="translate(800,600) scale(0.56)">
     <!-- sound waves near the bus -->
     <g id="music-effects" stroke="#ffd98a" fill="none" opacity="0.35">
       <circle cx="0" cy="-40" r="130">
@@ -318,6 +318,12 @@
       </g>
     </g>
 
+    <!-- Hindi bus name, hand-painted style, between the rear window and the coach line -->
+    <g id="bus-name">
+      <text x="1" y="-4" text-anchor="middle" font-family="'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#2a1016" opacity="0.5">हमसफ़र</text>
+      <text x="0" y="-6" text-anchor="middle" font-family="'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif" font-size="27" font-weight="700" fill="#f7ecd2">हमसफ़र</text>
+    </g>
+
     <!-- side window strips suggesting the bus's width -->
     <rect x="-232" y="-140" width="16" height="90" rx="4" fill="url(#busGlass)" opacity="0.7" />
     <rect x="216" y="-140" width="16" height="90" rx="4" fill="url(#busGlass)" opacity="0.7" />
@@ -346,10 +352,10 @@
       <circle r="14" fill="#5a4a44" />
       <g stroke="#161010" stroke-width="4">
         <line x1="-14" y1="0" x2="14" y2="0">
-          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
         </line>
         <line x1="0" y1="-14" x2="0" y2="14">
-          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
         </line>
       </g>
     </g>
@@ -358,10 +364,10 @@
       <circle r="14" fill="#5a4a44" />
       <g stroke="#161010" stroke-width="4">
         <line x1="-14" y1="0" x2="14" y2="0">
-          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
         </line>
         <line x1="0" y1="-14" x2="0" y2="14">
-          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="1.4s" repeatCount="indefinite" />
         </line>
       </g>
     </g>
